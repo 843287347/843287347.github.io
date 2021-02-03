@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title>Towards a Human-like Open-Domain Chatbot</title>
+      <link href="2021/01/31/lunwen-meena/"/>
+      <url>2021/01/31/lunwen-meena/</url>
+      
+        <content type="html"><![CDATA[<h2 id="《Towards-a-Human-like-Open-Domain-Chatbot》"><a href="#《Towards-a-Human-like-Open-Domain-Chatbot》" class="headerlink" title="《Towards a Human-like Open-Domain Chatbot》"></a>《<strong>Towards a Human-like Open-Domain Chatbot</strong>》</h2><blockquote><p>该论文是由google的<strong>Daniel Adiwardana</strong>、<strong>Minh-Thang Luong</strong>等作者合作完成的。发表在ACL-2020会议上。</p></blockquote><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>在这篇论文中，提出了一个多轮、开放域聊天机器人 <strong>Meena</strong>，它是挖掘和过滤后的公众社交媒体的数据端到端训练完成的。它拥有2.6B个参数的神经网络模型，训练目标仅是简单的求最小困惑度度。同时该论文也提出了人类评价指标SSA（Sensibleness and Specificity Average），这个指标能够捕获和人类相似的多轮聊天中的关键信息。通过实验，我们看到困惑度（perplexity）和SSA有很强的相关性。一个事实就是，通过端到端训练后拥有最低困惑度的<strong>Meena</strong>在SSA上取得很高的分数，这表明，如果我们能更好地优化困惑度，86%的SSA是可以达到的。此外，完整版本的Meena（具有过滤机制和调谐解码）得分79%的SSA，我们估计23%的绝对SSA高于现有的聊天机器人。</p><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>能够用自然语言进行自由交谈是人类智慧的标志之一，同时也是对真正的人工智能的要求。为了探索真正的智能这一方面，许多研究人员正在研究开放域聊天机器人。目前一些开放域的聊天机器人例如<strong>MILABOT</strong>、<strong>XiaoIce</strong>、<strong>Mitsuku</strong>和<strong>Cleaverbot</strong> ，它们都展示出了人的一些属性，但是依赖于复杂框架，例如基于知识图谱、基于检索和基于规则的系统。尽管进行了大量的研究，但开放域聊天机器人仍然有一些弱点，使它们无法普遍适用，它们往往会给出无意义、模糊的回答。</p><p>该文介绍了Meena，一种生成性聊天机器人模型，它是在公共领域社交媒体对话中挖掘和过滤的40B单词上进行端到端训练的。对于Meena，他推动了端到端方法的限制，并表明大规模的低复杂性模型可以是一个很好的会话者。它将基于ET（Evolved Transformer）的Seq2Seq的模型作为主要结构。该模型是在多回合对话中训练的，其中输入序列是上下文的所有回合（最多7），输出序列是回答。我们的最佳模型有2.6B参数，并且基于8k个BPE子单词的词汇表实现了10.2的困惑度。</p><p>为了测量Meena和其他聊天机器人的质量，提出了一个简单的人类评价度量。敏感性和具体性平均 <strong>SSA</strong> 结合了一个类似人类的聊天机器人的两个基本方面：有意义和具体性。我们要求人类评委对每一个回答在这两个方面进行打分。这里提供了两种评估方式，一种是静态评估，另一种是交互式评估。静态评估就是给定多轮对话的数据集，而交互式评估就是人类评委能够进行随意交流。</p><p>该文主要的贡献是：</p><ul><li>提出了一个简单的人类评估指标，可以用于开放域多轮对话模型。</li><li>表明困惑是一种与人类判断相关的自动度量</li><li>证明了一个具有足够低困惑的端到端神经模型可以超越现有聊天机器人的敏感性和特异性</li></ul><h2 id="对聊天机器人的评估"><a href="#对聊天机器人的评估" class="headerlink" title="对聊天机器人的评估"></a>对聊天机器人的评估</h2><h3 id="对聊天机器人的评估-1"><a href="#对聊天机器人的评估-1" class="headerlink" title="对聊天机器人的评估"></a>对聊天机器人的评估</h3><p>为了评估模型回应的质量，我们提出了两个问题的序列。首先判断回应是否有意义，因为有意义代表了基础的常识知识和逻辑连贯性。回应仅仅有意义的还不够，会进一步询问被测试人员是否回答准确。例如：A说“我喜欢打网球”，B说“真好”，这样的回答并不是准确的。如果B说：“我也是，我特别喜欢罗杰·费德勒”，这样的回答是准确的。</p><p>为了将这两个指标组合成一个度量，我们取两个指标中的平均值，我们称之为SSA（敏感性和特异性平均值）。SSA能够代表人类相似度，它会惩罚经常产生通用响应的聊天机器人。在SSA出现之前，经常有两个问题困扰着研究者们，第一个就是人工测试的工作人员需要做什么，第二个就是工作人员如何更好地表达。SSA能够解决这两个问题。首先，SSA很容易被工作人员理解，其次，附加的问题没有额外信息，最后能够很多主观问题会被筛选掉。</p><h3 id="静态评估"><a href="#静态评估" class="headerlink" title="静态评估"></a>静态评估</h3><p>为了有一个通用的比较模型基准，我们创建了一个包含1477个会话上下文的集合，在1到3个会话回合之间，我们称之为Mini-图灵基准(MTB)。MTB还包含有个性问题的上下文(例如。 “你喜欢猫吗？”)，其中一些人期待着有个性一致性的回应。例如：</p><pre class="line-numbers language-none"><code class="language-none">A：“你喜欢看电影嘛”，B：“喜欢，我最喜欢的就是科幻电影”，A：“你最喜欢哪一部？”<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>期待的回答应该类似于“我喜欢《I Love Back to Future》”，相反如果回答“我不喜欢电影”，那么就会自相矛盾，因此会被视为无意义的回应。</p><p>在评估聊天机器人时，我们将MTB文本喂给模型或者给人类，以获取响应。 我们将得到的（context，response）对给工作者，并询问是否一个response是明智和具体的。 我们称之为静态评估，这是因为上下文是固定的。</p><h3 id="交互式评估"><a href="#交互式评估" class="headerlink" title="交互式评估"></a>交互式评估</h3><p>静态评估可能适合于比较模型，对静态评估数据集的构造往往有偏见。为了解决这一问题，我们创建了一个额外的评估模式，在这种模式下，工作人员可以与聊天机器人1：1聊天，讨论他们想要的任何东西。和静态评估一样，还需要工作人员去判断聊天机器人给的回应是否有意义并且准确。与典型的图灵测试不同，我们预先告诉人类评委，他们即将与一个实验的聊天机器人聊天，并要求他们在感知和特异性方面标记聊天机器人说的话。</p><h2 id="Meena-聊天机器人"><a href="#Meena-聊天机器人" class="headerlink" title="Meena 聊天机器人"></a>Meena 聊天机器人</h2><p>如上所述，最近关于端到端对话模型的工作分为两大类：第一类是具有人工设计组件的复杂模型，另一类是大型神经网络模型（称为端到端模型），后者更接近通用学习框架。一个悬而未决的问题是：为了达到更好的模型质量，简单的扩大模型可以实现吗？比如增加训练数据量和增加模型参数数量。亦或者是将这样的模型与其他组件结合起来？在本节中，我们将介绍Meena模型，他是目前为止最大的端到端模型。我们相信它回答了刚才的问题，表明一个大型的端到端模型可以在开放域设置中生成几乎类似人类的聊天响应。</p><h3 id="训练数据"><a href="#训练数据" class="headerlink" title="训练数据"></a>训练数据</h3><p>用于训练Meena的数据集是从公共领域社交媒体对话中挖掘和过滤的。源数据本质上是一棵消息树，包含了多名对话人员。其中第一个消息是根节点，他的孩子节点都是对应一个消息。沿着树的任何路径都展示了一次对话，其中每条消息都是一个对话回合。通过将会话路径中的每个回合作为响应处理，并将以前的所有回合（最多7)作为上下文处理，我们创建了(context、response）表单对的训练示例。</p><p>同时我们也对数据进行了过滤，当满足删除条件时，会将该对话的子树移除。过滤之后的数据大约867M的个(context、response）对。文本是通过BPE（byte-pair-encoding）进行分词。我们使用8K个BPE子单词的词汇。最终，Meena 数据集大概341GB的文本（40B 词）。相比较，GPT-2的数据集为40GB。</p><h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>性能最好的Meena模型是Evolved Transformer(ET)seq2seq模型，具有2.6B参数，包括1个ET编码块和13个ET解码块。ET是NAS结构演化来的。我们最大的（即最大内存使用）ET得分10.2困惑度，我们最大的Vanilla  Transformer得分10.7，使用相同数量的训练步骤(738K)。最大的Vanilla Transformer有32个解码器层与其他架构超参数保持不变。</p><p>作为比较，超大型GPT-2模型(Radford等人，2019年)具有1.5B参数，是一种语言模型（即仅解码器）；而最近DialoGPTwo的大型会话模型 雷克(Zhang等人，2019年)有762M参数。</p><p>Meena的隐藏层有2560个节点，注意头数是32。 我们在编码器、解码器和Softmax层共享词嵌入。 编码器和解码器的最大长度是 128个字符（即256个组合）。 我们的最佳模型的超参数是通过手动坐标下降搜索找到的。</p><h3 id="训练细节"><a href="#训练细节" class="headerlink" title="训练细节"></a>训练细节</h3><p>最佳的模型用TPU-v3 Pod (2048个TPU核) 在Meena数据集上运行了30天，该数据集上包含40B个单词。另外有趣的是，这个2.6B参数的模型会在61B单词的数据集上过拟合，这表明模型容量惊人的大。因此我们添加一个0.1的注意力和前馈层的dorpout。此外，为了节省内存，我们选择了Adafactor优化器，以0.01为初始学习速率，在前10k步骤中保持不变，然后用步骤数的平方根的倒数衰减。</p><h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><p>聊天机器人往往会生成无聊的，通用的回答。为了解决这个问题，往往会使用复杂的解码算法，例如不同形式的重排列或者调整配置文件，主题和风格。最近研究工作也探索了新的框架，例如对抗学习，变分自动编码或者两者的结合。</p><p>我们表明，如果提供要给足够低困惑底的模型，一个简单的 “采样-排列” 的解码策略就可以实现了多样化和高质量的回答。 工作如下 ，首先我们使用温度为T的普通随机抽样，采样N个独立的备选回答，然后我们选择概率最高的候选回答作为最终输出。温度T&gt;0是一个超参数，它在解码过程中调节下一个令牌的概率分布pi。<br>$$<br>p_i = \frac{exp(\frac{z_i}{T})}{\sum_j exp(\frac{z_j}{T} )}<br>$$<br>我们观察到，T的越大越有利于上下文罕见的词，同时，较小的T值有利于更常见的词，如冠词或介词，它们更保守，但不那么具体。</p><p><img src="https://i.loli.net/2021/02/03/kNypxVQlMeOzb83.png" alt="image-20210203143701552"></p><p><img src="https://i.loli.net/2021/02/03/vsHaj6KJZyOoYhz.png" alt="image-20210203143720463"></p><p>从表2 和表3 中我们可以看出来相对于Beam Search，采样再排序提供更多样性的回答。</p><h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><h3 id="SSA-和-困惑度的相关性"><a href="#SSA-和-困惑度的相关性" class="headerlink" title="SSA 和 困惑度的相关性"></a>SSA 和 困惑度的相关性</h3><p>静态评估的意义性与困惑的相关性R2=0.93，静态特异性与困惑的相关性R2=0.94，表明这可能是一个很好的自动测量意义性和准确性的指标。 静态SSA与困惑度有R2=0.94。 静态评价结果如图5所示。 相关性接近线性，但尚不清楚这一趋势是否会达到更低的困惑度。</p><p><img src="https://i.loli.net/2021/02/03/BeMId8HFSLwGA5y.png" alt="image-20210203144417790"></p><p>在交互式评估（第2.3节）中，工作人员可以谈论他们想要的任何东西。 我们观察到同样强的与困惑度的相关性（见图1、图3和图4）。 这表明与困惑度的静态评估相关性不是由于数据集的偏差。</p><p>在一致性方面，静态评估对最低困惑度模型进行了7次评估，交互式评估对最低困惑度模型进行了7次评估。每次我们都得到一组不同的随机采样 领导的反应。 在整个评估中，静态SSA的标准差为2%，交互式SSA的标准差为1%，这表明这两个指标对于我们的目的来说是足够一致的。</p><h3 id="模型比较"><a href="#模型比较" class="headerlink" title="模型比较"></a>模型比较</h3><p>我们获取到其他的聊天机器人的模型，并通过公司的志愿者对不同的聊天机器人进行评估，下面展示几个简单的例子。</p><p><img src="C:\Users\laplacexian\AppData\Roaming\Typora\typora-user-images\image-20210203145011922.png" alt="image-20210203145011922"></p><p>更多的例子，可以查看原论文。</p><h2 id="SSA的改进"><a href="#SSA的改进" class="headerlink" title="SSA的改进"></a>SSA的改进</h2><ul><li>使用更好的解码算法</li><li>解决交叉重复的问题</li><li>设置安全层</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 论文阅读 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> 论文 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>git使用汇总</title>
+      <link href="2021/01/29/git-shi-yong-hui-zong/"/>
+      <url>2021/01/29/git-shi-yong-hui-zong/</url>
+      
+        <content type="html"><![CDATA[<h2 id="git汇总"><a href="#git汇总" class="headerlink" title="git汇总"></a>git汇总</h2><p>不用老忘，好记性不如烂笔头（指键盘）。</p><h3 id="如何创建一个新的github仓库"><a href="#如何创建一个新的github仓库" class="headerlink" title="如何创建一个新的github仓库"></a>如何创建一个新的github仓库</h3><ol><li>一般都是先从github 或者gitte中新建好仓库（respository)。</li><li>创建好仓库之后，这样就可以获取到仓库的链接（点击克隆/下载）。</li><li>在你的电脑上新建一个文件夹，它是准备用来保存你项目代码的。</li><li>右键这个文件夹，选择 <code>git bash</code> 。</li><li>然后<code>git clone &quot;你的github 仓库的地址&quot;</code></li><li>这样，你的本地仓库（文件夹）和 github 的仓库就绑定好了。</li><li>把你的代码，复制到文件夹内，然后在bash里面<code>git push</code>。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> git </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Lasso-ReLU回归</title>
       <link href="2021/01/26/lasso/"/>
       <url>2021/01/26/lasso/</url>
