@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="git使用汇总, 李贤的博客">
+    <meta name="keywords" content="BERT 详解, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>git使用汇总 | 李贤的博客</title>
+    <title>BERT 详解 | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">git使用汇总</h1>
+                    <h1 class="description center-align post-title">BERT 详解</h1>
                 </div>
             </div>
         </div>
@@ -431,8 +431,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/git/">
-                                <span class="chip bg-color">git</span>
+                            <a href="/tags/NLP/">
+                                <span class="chip bg-color">NLP</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%AE%BA%E6%96%87/">
+                                <span class="chip bg-color">论文</span>
                             </a>
                         
                     </div>
@@ -443,8 +447,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/git/" class="post-category">
-                                git
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                论文阅读
                             </a>
                         
                     </div>
@@ -456,7 +460,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-29
+                    2021-03-20
                 </div>
                 
 
@@ -465,14 +469,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    164
+                    598
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -495,16 +499,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="git汇总"><a href="#git汇总" class="headerlink" title="git汇总"></a>git汇总</h2><p>不用老忘，好记性不如烂笔头（指键盘）。</p>
-<h3 id="如何创建一个新的github仓库"><a href="#如何创建一个新的github仓库" class="headerlink" title="如何创建一个新的github仓库"></a>如何创建一个新的github仓库</h3><ol>
-<li>一般都是先从github 或者gitte中新建好仓库（respository)。</li>
-<li>创建好仓库之后，这样就可以获取到仓库的链接（点击克隆/下载）。</li>
-<li>在你的电脑上新建一个文件夹，它是准备用来保存你项目代码的。</li>
-<li>右键这个文件夹，选择 <code>git bash</code> 。</li>
-<li>然后<code>git clone &quot;你的github 仓库的地址&quot;</code></li>
-<li>这样，你的本地仓库（文件夹）和 github 的仓库就绑定好了。</li>
-<li>把你的代码，复制到文件夹内，然后在bash里面<code>git push</code>。</li>
-</ol>
+                <p>[1].Devlin J, Chang M W, Lee K, et al. Bert: Pre-training of deep bidirectional transformers for language understanding[J]. arXiv preprint arXiv:1810.04805, 2018.</p>
+<h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>BERT（<strong>B</strong>idirectional <strong>E</strong>ncoder <strong>R</strong>epresentations from <strong>T</strong>ransformers），是一个强大的预训练模型，它是基于对无标签文本<strong>联合学习</strong>训练得到的。</p>
+<p>目前有两种策略将预训练语言模型到下游任务中，分别是<em>feature-based</em> 和 <em>fine-tuning</em>。第一种方法，例如ELMo模型，它将预训练的表示作为额外的特征加入到模型里。第二种方法，例如GPT模型，它引入了模型的参数，然后通过简单的微调，得到好的模型。</p>
+<p>但是以上两种方法都只使用了单向的语言模型，去学习通用的语言表示，这严重地限制了预训练表示的能力，因此提出了BERT模型。</p>
+<p><img src="https://i.loli.net/2021/03/20/DEQYKgpAB2MCofb.png" alt="BERT的预训练和微调"></p>
+<h3 id="预训练BERT"><a href="#预训练BERT" class="headerlink" title="预训练BERT"></a>预训练BERT</h3><p>在训练BERT的时候使用了两个无监督任务，分别是掩码语言模型（Masked LM）和下句预测（Next Sentence Prediction NSP）</p>
+<h4 id="Masked-LM"><a href="#Masked-LM" class="headerlink" title="Masked LM"></a><strong>Masked LM</strong></h4><p>为了训练深度双向表示，通过随机的将一定比例的词进行遮盖，然后让模型去预测这个词。对于训练的数据中，随机选取15%的词，对于每一个选取的词，有80%的概率替换成[MASK] ，10%的概率不会变化，10%的概率用其他词替换。</p>
+<h4 id="Next-Sentence-Prediction"><a href="#Next-Sentence-Prediction" class="headerlink" title="Next Sentence Prediction"></a><strong>Next Sentence Prediction</strong></h4><p>像问答系统（QA）和自然语言推理（NLI）任务，主要是要模型去理解两个句子之间的关系。因此对于输入的两个句子A和B，其中有50%的概率是A是真正的下一句，有50%的概率是随机的句子。</p>
+<blockquote>
+<p>Input = [CLS] the man went to [MASK] store [SEP] </p>
+<pre><code>         he bought a gallon [MASK] milk [SEP]</code></pre>
+<p>Label = IsNext</p>
+<p>INput = [CLS] the man [MASK] to the stroe [SEP]</p>
+<p>​            penguin [MASK] are flight ## less birds [SEP]</p>
+<p>Label = NotNext</p>
+</blockquote>
+<h3 id="微调BERT"><a href="#微调BERT" class="headerlink" title="微调BERT"></a>微调BERT</h3><p>微调就是直接干脆地，因为Transformer的自注意机制让BERT可以对不同的下游任务进行建模，通过选择合适的输入和输出的格式。对于一些常见的任务，可以选择</p>
+<ul>
+<li>Sentence-Paraphrasing 句子-文章对</li>
+<li>Hypothesis-Premise 假设-前提对</li>
+<li>Question-Passage 问题-段落对</li>
+<li>退化的 Text - null 对</li>
+</ul>
+<h4 id="BERT的模型结构"><a href="#BERT的模型结构" class="headerlink" title="BERT的模型结构"></a>BERT的模型结构</h4><p><img src="https://i.loli.net/2021/03/20/wEaXpLFoSA5rUyR.png" alt="不同预训练模型结构的差别"></p>
+<p>我们可以看到OpenAI 的GPT模型使用的是从左向右的Transformer，ELMo使用的是级联的双向LSTMs结构。而BERT则是联合了双向的文本。</p>
 
                 
             </div>
@@ -531,7 +550,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/01/29/git-shi-yong-hui-zong/">https://github.com/843287347/843287347.github.io/2021/01/29/git-shi-yong-hui-zong/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/03/20/bert-xiang-jie/">https://github.com/843287347/843287347.github.io/2021/03/20/bert-xiang-jie/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -569,8 +588,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/git/">
-                                    <span class="chip bg-color">git</span>
+                                <a href="/tags/NLP/">
+                                    <span class="chip bg-color">NLP</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%AE%BA%E6%96%87/">
+                                    <span class="chip bg-color">论文</span>
                                 </a>
                             
                         </div>
@@ -742,17 +765,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/01/31/lunwen-meena/">
+                <a href="/2021/03/20/bert-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Towards a Human-like Open-Domain Chatbot">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
                         
-                        <span class="card-title">Towards a Human-like Open-Domain Chatbot</span>
+                        <span class="card-title">BERT 详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -762,9 +786,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -777,6 +801,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -799,13 +824,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/01/26/lasso/">
+                <a href="/2021/03/20/the-transformer-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Lasso-ReLU回归">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="The Transformer 详解">
                         
-                        <span class="card-title">Lasso-ReLU回归</span>
+                        <span class="card-title">The Transformer 详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -816,14 +841,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-26
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E5%AD%A6/" class="post-category">
-                                    数学
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                    论文阅读
                                 </a>
                             
                             
@@ -833,12 +858,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Lasso/">
-                        <span class="chip bg-color">Lasso</span>
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
                     </a>
                     
-                    <a href="/tags/LeakyRelu/">
-                        <span class="chip bg-color">LeakyRelu</span>
+                    <a href="/tags/%E8%AE%BA%E6%96%87/">
+                        <span class="chip bg-color">论文</span>
                     </a>
                     
                 </div>
