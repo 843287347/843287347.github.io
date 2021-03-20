@@ -469,7 +469,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    598
+                    606
                 </div>
                 
 
@@ -508,12 +508,12 @@
 <h4 id="Masked-LM"><a href="#Masked-LM" class="headerlink" title="Masked LM"></a><strong>Masked LM</strong></h4><p>为了训练深度双向表示，通过随机的将一定比例的词进行遮盖，然后让模型去预测这个词。对于训练的数据中，随机选取15%的词，对于每一个选取的词，有80%的概率替换成[MASK] ，10%的概率不会变化，10%的概率用其他词替换。</p>
 <h4 id="Next-Sentence-Prediction"><a href="#Next-Sentence-Prediction" class="headerlink" title="Next Sentence Prediction"></a><strong>Next Sentence Prediction</strong></h4><p>像问答系统（QA）和自然语言推理（NLI）任务，主要是要模型去理解两个句子之间的关系。因此对于输入的两个句子A和B，其中有50%的概率是A是真正的下一句，有50%的概率是随机的句子。</p>
 <blockquote>
-<p>Input = [CLS] the man went to [MASK] store [SEP] </p>
-<pre><code>         he bought a gallon [MASK] milk [SEP]</code></pre>
-<p>Label = IsNext</p>
-<p>INput = [CLS] the man [MASK] to the stroe [SEP]</p>
-<p>​            penguin [MASK] are flight ## less birds [SEP]</p>
-<p>Label = NotNext</p>
+<p><strong>Input</strong> = [CLS] the man went to [MASK] store [SEP]  he bought a gallon [MASK] milk [SEP]</p>
+<p><strong>Label</strong> = IsNext</p>
+</blockquote>
+<blockquote>
+<p><strong>Input</strong> = [CLS] the man [MASK] to the stroe [SEP] penguin [MASK] are flight ## less birds [SEP]</p>
+<p><strong>Label</strong> = NotNext</p>
 </blockquote>
 <h3 id="微调BERT"><a href="#微调BERT" class="headerlink" title="微调BERT"></a>微调BERT</h3><p>微调就是直接干脆地，因为Transformer的自注意机制让BERT可以对不同的下游任务进行建模，通过选择合适的输入和输出的格式。对于一些常见的任务，可以选择</p>
 <ul>
@@ -523,7 +523,7 @@
 <li>退化的 Text - null 对</li>
 </ul>
 <h4 id="BERT的模型结构"><a href="#BERT的模型结构" class="headerlink" title="BERT的模型结构"></a>BERT的模型结构</h4><p><img src="https://i.loli.net/2021/03/20/wEaXpLFoSA5rUyR.png" alt="不同预训练模型结构的差别"></p>
-<p>我们可以看到OpenAI 的GPT模型使用的是从左向右的Transformer，ELMo使用的是级联的双向LSTMs结构。而BERT则是联合了双向的文本。</p>
+<p>我们可以看到OpenAI 的GPT模型使用的是从左向右的Transformer，ELMo使用的是级联的双向LSTMs结构。而BERT则是结合了双向的文本信息，通过使用Transformer块。</p>
 
                 
             </div>
