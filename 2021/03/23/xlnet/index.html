@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Lasso-ReLU回归, 李贤的博客">
+    <meta name="keywords" content="XLNet, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Lasso-ReLU回归 | 李贤的博客</title>
+    <title>XLNet | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Lasso-ReLU回归</h1>
+                    <h1 class="description center-align post-title">XLNet</h1>
                 </div>
             </div>
         </div>
@@ -429,29 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Lasso/">
-                                <span class="chip bg-color">Lasso</span>
-                            </a>
-                        
-                            <a href="/tags/LeakyRelu/">
-                                <span class="chip bg-color">LeakyRelu</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E6%95%B0%E5%AD%A6/" class="post-category">
-                                数学
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -460,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-26
+                    2021-03-23
                 </div>
                 
 
@@ -469,14 +452,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -499,7 +482,44 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="XLnet论文介绍"><a href="#XLnet论文介绍" class="headerlink" title="XLnet论文介绍"></a>XLnet论文介绍</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>像BERT这样的模型已经取得好效果，他们都是基于预训练的<strong>双向</strong>文本和去噪自编码（DAE）结构。然而BERT忽略了被遮位置之间的依赖关系，同时还会遇到预训练与微调不一致的的情况。基于以上的优缺点，提出了XLnet，一种通用的自回归预训练方法，它具有以下特性：</p>
+<ol>
+<li>双向学习文本</li>
+<li>克服了BERT中自回归形式的限制</li>
+</ol>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>目前无监督预训练模型有两大类方法最受欢迎，第一类是<strong>自回归（AR）</strong>语言建模，第二类是<strong>自编码（AE）</strong>。</p>
+<p><strong>自回归（AR）语言建模</strong>，一般是使用自回归模型（例如RNN、LSTM）去估计文本的概率密度分布。比如说，对于一个文本序列$x=(x_1,…,x_T)$，AR语言建模会将其分解为向前的累乘$p(X) = \prod_{t=1}^T p(x_t|X&lt;t)$ 或者向后的累成。但AR语言建模只能同时获取<strong>单方向</strong>的信息，而一些常用的下游任务往往会用到双向文本信息，这使AR模型有了一些局限性。</p>
+<p><strong>自编码（AE）语言建模</strong>，并不会直接去估计概率密度分布，而是通过重构出损坏的数据的方式。一个鲜明的例子就是BERT模型，对于给定一个文本序列，按一定的比例将文本信息遮住，并且让模型尝试将其恢复出来。由于BERT为了恢复数据，因此它需要用到双向的文本信息，这有一定的好处。但缺点就是人为地添加了一些符号[MASK]，使得模型在预训练和微调阶段出现<strong>不一致</strong>的情况。</p>
+<p>为了结合以上两种方法的优点以及避免他们的缺点，提出了XLNet。</p>
+<h3 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h3><p><strong>AR：</strong></p>
+<p><img src="https://i.loli.net/2021/03/24/hDZKRBMsLjytYGQ.png" alt="AR语言模型的目标函数"></p>
+<p>类似于RNN，AR语言模型预测当前的$x_t$要依赖<strong>前$t-1$个文本</strong>，其中$h_{\theta}(x1:t-1)$就是表示模型保留的前$t-1$个文本的信息，最终以softmax的格式表示。</p>
+<p><strong>AE：</strong></p>
+<p><img src="https://i.loli.net/2021/03/24/OufNgIT487VCcPZ.png" alt="AE语言模型的目标函数"></p>
+<p>以EERT为例，它是通过恢复被遮住的信息为目标训练模型，例如，对于一个序列$x$，$\hat{x}$表示被遮住后的序列，将$\overline{x}$表示为被遮住的信息，因此训练目标就是从$\hat{x}$中获取信息，来<strong>恢复$\overline{x}$。</strong>其中$m_t=1$时，表示$x_t$是被遮住的信息。</p>
+<p><strong>排列语言模型</strong></p>
+<p>来的NADE灵感，作者提出了排列语言模型目标函数。对于一个序列长度为$T$，它共有$T!$种排列情况，如果共享所有的排列顺序，很自然就可以获取到左右两侧的信息。举个例子：</p>
+<p>对于原始序列1-&gt;2-&gt;3-&gt;4，如果此时预测位置3的信息，输入的顺序是1-&gt;4-&gt;3-&gt;2，那么根据从左往右处理，就可以获取到位置1和位置4的信息。在原始序列中，1和4分别是3的两侧的信息。</p>
+<p>那么这里的目标函数可以表示为：</p>
+<p><img src="https://i.loli.net/2021/03/24/tmeISZrQ4vJ5bdV.png" alt="排列语言模型的目标函数"></p>
+<p>其中$Z_T$表示所有排列组合的集合，$X_{z&lt;t}$表示该排列组合$z$中前$t-1$个元素。</p>
+<h3 id="双流自注意"><a href="#双流自注意" class="headerlink" title="双流自注意"></a>双流自注意</h3><p>有两点需要提一下：</p>
+<ol>
+<li>如果去预测$x_{z_t}$时，我们只需要获取前$t-1$个信息，和位置信息$z_t$。</li>
+<li>如果去预测其他的$x_{z_j},j&gt;t$，我们需要前$t-1$个信息和内容信息$x_{z_t}$。</li>
+</ol>
+<p>因此对于不同任务，需要使用不同的信息，这里分为：</p>
+<ol>
+<li>内容表达$h_{\theta}(X_{z\le t })$，缩写为$h_{zt}$，它包含了上下文信息和$x_{z_t}$。</li>
+<li>查询表达$g_{\theta}(X_{x&lt;t})$，缩写为$g_{z_t}$，它只包含了上下文信息。</li>
+</ol>
+<p>权重更新时，递推表达式为:</p>
+<p><img src="https://i.loli.net/2021/03/24/Z9PGziTmgeFtcnd.png" alt="双流自注意权值计算"></p>
+<p>对于两种自注意权重更新，Q矩阵和KV矩阵分别不同，其中上标$(m)$表示第m层的Transformer。</p>
+<p>最终双流自注意的计算过程为：</p>
+<p><img src="https://i.loli.net/2021/03/24/aIPDs9G3STCxJb5.png" alt="双流自注意结构"></p>
+<p>对于排列顺序为3-&gt;2-&gt;4-&gt;1的组合，通过两个Attention Masks矩阵来控制，例如矩阵第一行表示的是位置1，在组合中它前面的位置有3，2，4，因此位置1可以获取到2，3，4的文本信息。</p>
+
                 
             </div>
             <hr/>
@@ -525,7 +545,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/01/26/lasso/">https://github.com/843287347/843287347.github.io/2021/01/26/lasso/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/03/23/xlnet/">https://github.com/843287347/843287347.github.io/2021/03/23/xlnet/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -562,15 +582,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Lasso/">
-                                    <span class="chip bg-color">Lasso</span>
-                                </a>
-                            
-                                <a href="/tags/LeakyRelu/">
-                                    <span class="chip bg-color">LeakyRelu</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -728,6 +740,269 @@
     
 
     
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'TJPDHlLMYiDc6aMgpfWrSj6h-gzGzoHsz',
+        appKey: 'UkpkIodQSpbD5kf4DHyd7B8n',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
 
     
 
@@ -740,66 +1015,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/01/29/git-shi-yong-hui-zong/">
+                <a href="/2021/03/23/xlnet/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="git使用汇总">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="XLNet">
                         
-                        <span class="card-title">git使用汇总</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-29
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/git/" class="post-category">
-                                    git
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/git/">
-                        <span class="chip bg-color">git</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/01/23/an-zhuang-node.js/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
-                        
-                        <span class="card-title">Nodejs 的安装</span>
+                        <span class="card-title">XLNet</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -810,14 +1037,52 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-23
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/03/20/bert-xiang-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
+                        
+                        <span class="card-title">BERT 详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                    论文阅读
                                 </a>
                             
                             
@@ -827,16 +1092,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/nodejs/">
-                        <span class="chip bg-color">nodejs</span>
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
                     </a>
                     
-                    <a href="/tags/npm/">
-                        <span class="chip bg-color">npm</span>
-                    </a>
-                    
-                    <a href="/tags/yarn/">
-                        <span class="chip bg-color">yarn</span>
+                    <a href="/tags/%E8%AE%BA%E6%96%87/">
+                        <span class="chip bg-color">论文</span>
                     </a>
                     
                 </div>
@@ -1046,7 +1307,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">7.1k</span>&nbsp;字
+                class="white-color">8.2k</span>&nbsp;字
             
             
             
