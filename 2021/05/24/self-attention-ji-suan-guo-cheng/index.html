@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="The Transformer 详解, 李贤的博客">
+    <meta name="keywords" content="Self-Attention计算过程, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>The Transformer 详解 | 李贤的博客</title>
+    <title>Self-Attention计算过程 | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">The Transformer 详解</h1>
+                    <h1 class="description center-align post-title">Self-Attention计算过程</h1>
                 </div>
             </div>
         </div>
@@ -429,29 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/NLP/">
-                                <span class="chip bg-color">NLP</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                <span class="chip bg-color">论文</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                论文阅读
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -460,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-20
+                    2021-05-24
                 </div>
                 
 
@@ -469,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    892
                 </div>
                 
 
@@ -499,28 +482,56 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>对于构建语言模型和机器翻译等任务，使用基于Seq2Seq架构的RNN、LSTM、GRU等传统方法，已经取得了非常好的效果。尽管目前使用了一系列的方法，提升了RNNs的效率，例如使用因式分解，条件计算等技巧。但是RNNs根本的的缺陷并没有解决，还一直保留着。</p>
-<p>注意力机制（Attention mechanisms）已经是序列建模（sequence  modeling）和传导模型（transduction model）的不可或缺的部分。它可以找到输入、输出序列之间的依赖程度，而不依赖于词与词之间的距离。</p>
-<p>在论文中，提出了Transformer模型，它抛弃了循环神经网络，而是完全依赖于注意力机制的一种模型结构。</p>
-<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>目前效果好的神经序列传导模型都是基于encoder-decoder的结构。它的encoder部分是将符号序列表示$(x_1,…,x_n)$ 映射到连续的表示$z=(z_1,…,z_n)$，然后对于decoder部分，将$z$ 作为输入，最终输出符号序列$(y_1,…,y_m)$ ，在每一个时间步长都是自回归的：将$t-1$生成的输出，作为$t$的输入。</p>
-<p>Transformer的模型结构如下所示：</p>
-<p><img src="https://i.loli.net/2021/03/20/EZduNkxml2DQ83c.png" alt="Transformer结构"></p>
-<h4 id="编码器和解码器"><a href="#编码器和解码器" class="headerlink" title="编码器和解码器"></a>编码器和解码器</h4><p><strong>Encoder：</strong> 这个编码器是由6个相同的层堆叠构成的，其中的每一层中包括两个子层。第一个子层是<strong>多头注意力机制</strong> ，第二个子层就是简单的<strong>全连接前馈网络</strong>。在每一个子层中都是用了<strong>残差连接（residual connections）</strong>和<strong>层正则化（layer normalization）</strong>。对于每一个子层，它的输出就相当于<br>$$<br>LayerNorm(x + SubLayer(x))<br>$$<br>同时为了方便，所有的输出维度都是$d_{model}=512$。</p>
-<p><strong>Decoder：</strong> 和编码器一样，解码器也是由6个相同的层堆叠构成的。对于每一个层，除了有相同的子层之外，还添加了第三个子层，它主要是是用于处理Encoder输出的序列。和Encoder一样也是使用了残差连接和层正则化。不同的是，修改了第一个子层的多头注意力机制，通过<strong>掩盖</strong>的方式，让解码器不能处理后面的内容。（例如，假如预测下一个词任务是，已知的信息只能是前面已经出现过的词，因此需要将多余的信息抹去）。</p>
-<h4 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h4><p><strong>Scaled Dot-Product Attention</strong></p>
-<p>注意力机制可以描述成，给定一个查询、键-值对映射到一个输出向量。在这里使用了特定了“Scaled Dot-Product Attention”注意力计算方法。它的计算公式是<br>$$<br>Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V<br>$$<br>与additive attention 和dot-product 计算方法不同的是，它除以了$\sqrt{d_k}$，它可以很好地克服梯度很小的问题。</p>
-<p><img src="https://i.loli.net/2021/03/20/tRqS1NehIHPmBn7.png" alt="Scaled Dot-Product Attention计算流程"></p>
-<p><strong>Multi-Head Attention</strong></p>
-<p>多头注意力，就是通过$h$次线性投影，生成$h$个注意力层并分别计算权重。其中每一个注意力层都是通过Scaled Dot-Product Attention函数计算，最终将输出结果重新拼接到一起</p>
-<p><img src="https://i.loli.net/2021/03/20/thM1qoXaFwcLQPE.png" alt="Multi-Head Attention"></p>
-<p>使用数学公式描述就是</p>
-<p>$$<br>MultiHead(Q,K,V) = Concat(head_1,…,head_h)W^o<br>$$</p>
-<p>$$<br>head_i =Attention(QW_i^Q,KW_i^K,VW_i^V)<br>$$</p>
-<h4 id="基于位置的前馈神经网络"><a href="#基于位置的前馈神经网络" class="headerlink" title="基于位置的前馈神经网络"></a>基于位置的前馈神经网络</h4><p>除了<strong>多头自注意机制</strong> ，在编码器和解码器的每一个层都包含了前馈全连接网络。它是由两个线性变化层和ReLU函数构成。<br>$$<br>FFN(x) =max(0,xW_1 + b_1)W_2 +b_2<br>$$</p>
-<p><strong>位置编码</strong></p>
-<p>因为循环神经网络可以很好的处理时序信息，而使用注意力机制的时候，并不能很好的提供位置信息，因此需要给添加一个位置编码。有多种位置编码的方法，在原论文中，使用了三角函数的位置编码：<br>$$<br>PE（pos,2i） = sin(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$$<br>PE（pos,2i+1) = cos(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$i$是位置编码的为第$i$个维度。</p>
+                <h3 id="为什么要用Self-Attention"><a href="#为什么要用Self-Attention" class="headerlink" title="为什么要用Self-Attention"></a>为什么要用Self-Attention</h3><p>以序列标注任务（Sequence Labeling）为例。为了更好的理解某个单词的词性，我们需要<strong>尽可能多的考虑到整句话的内容</strong>。例如下面这句话：</p>
+<blockquote>
+<p>I saw a saw</p>
+</blockquote>
+<p>我们要考虑整句话的内容，才能判断出第一个 <em>saw</em> 和第二个<em>saw</em>的词性。</p>
+<p>产生一个问题：我们是否有一种方法，它可以考虑到整个句子的所有的词。</p>
+<h3 id="Self-Attention怎么运作的"><a href="#Self-Attention怎么运作的" class="headerlink" title="Self-Attention怎么运作的"></a>Self-Attention怎么运作的</h3><p><img src="Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/self-frame.png" alt="self-attention框架"></p>
+<p>在图中，input时四个单词向量，通过了Self-attention后，output带有上下文信息的单词向量。然后再通过一个全连接层（Fully Connect）。可以通过不断地叠加Self-Attention 和FC层。一个比较著名的例子就是The Transformer。</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/frame-2.png" alt="内部结构"></p>
+<p>再这个图中，input是 $a^1,…,a^4$，output是$b^1,…,b^4$。</p>
+<p>以$b^1$为例，从虚线可以看出，它考虑了input所有的词。</p>
+<p><strong>如何考虑与其他词的关系呢</strong></p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/frame-3.png"></p>
+<p>其实就是要去判断两个词的相关性，其相关程度我们以$\alpha$ 来表示。</p>
+<p>下面就是关于$\alpha$的计算，其实有很多中计算方法，我们可以称它为分数函数。其中dot-product 方法最常用，我们以它为例。</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/cal-1.png"></p>
+<p>input向量分别是$a^1,…,a^4$ </p>
+<ul>
+<li><p>让他们乘上一个矩阵$W^q$，于是就得到了query向量$q^1,…,q^4$。</p>
+</li>
+<li><p>同理分别乘上一个矩阵$W^k$，得到key向量$k^1,…,k^4$。</p>
+</li>
+</ul>
+<p>我们让$q^1$ 和$k^2$ 相乘，得到一个标量$a_{1,2}$，表示$a_1$对$a_2$的注意程度。同理我们可以计算出$a_{1,3} ,a_{1,4},a_{1,1}$ 。</p>
+<p>然后我们通过Softmax函数进行归一化处理，得到$a_{1,1}^{\prime} ,…,a_{1,4}^\prime$。</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/cal-2.png"></p>
+<ul>
+<li><p>然后我们让$a^1,…,a^4$ 乘上矩阵$W^v$就可以得到value向量$v^1,…,v^4$。</p>
+</li>
+<li><p>最后通过加权求和，我们就得到$a^1$对应的output向量$b^1$。</p>
+</li>
+</ul>
+<p>其中output向量$b^1$，它具有上下问信息，因为它是通过“注意”其他词并且加权求和得到的向量。</p>
+<p>同理，我们可以通过上面的方法，分别求出$a^2,a^3,a^4$对应的输出$b^2,b^3,b^4$。</p>
+<h3 id="用矩阵乘法的角度"><a href="#用矩阵乘法的角度" class="headerlink" title="用矩阵乘法的角度"></a>用矩阵乘法的角度</h3><p> 对于每一个向量$a^1,…,a^4$，我们分别计算他们的$q^i,k^i,v^i,i\in{1,..,4}$ 。</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/mat-1.png"></p>
+<p>以向量$q^i$为例，我们将$W^q$乘上$a^1$得到$q^1$，乘上$a^2$得到$q^2$，以此类推。</p>
+<p>其实我们可以将$a^1,…,a^4$ 拼成一个矩阵$I$ ，让$W^q$ 乘上$I$ 就得到矩阵$Q$。其中$Q = {q^1,q^2,q^3,q^4}$。同理也可以得到矩阵$K$ 和$V。</p>
+<p><strong>计算注意力分数</strong></p>
+<p>我们用$\alpha_{i,j}$ 表示$a^i$ 注意$a^j$的分数。</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/mat-2.png"></p>
+<p>我们让$k^1,…,k^4$ 竖着拼成一个矩阵$K^T$，再乘上$q^1$ 就可以得到$\alpha_{1,1},…,\alpha_{1,4}$，同理乘上$q^2,q^3,q^4$。</p>
+<p>用矩阵表示就是$A = K^T Q$</p>
+<p>我们可以得到注意力分数矩阵$A$ ，然后通过Softmax得到所有的归一化的分数矩阵$A\prime。$</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/mat-3.png"></p>
+<p><strong>加权求和得到输出向量</strong></p>
+<p>再这里也是一样，我们让$v^1$ 乘上分数矩阵$A\prime$ 就可以得到$b^1$，同理可以得到$b^2,…,b^4$。</p>
+<p>用矩阵表示就是$O = V A\prime$</p>
+<p><img src="/Self-Attention%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B/mat-4.png"></p>
+<p>整体流程如上，其中$W^q,W^k,W^v$ 是需要模型学习的参数，其他都是固定的。</p>
 
                 
             </div>
@@ -547,7 +558,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/03/20/the-transformer-xiang-jie/">https://github.com/843287347/843287347.github.io/2021/03/20/the-transformer-xiang-jie/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/05/24/self-attention-ji-suan-guo-cheng/">https://github.com/843287347/843287347.github.io/2021/05/24/self-attention-ji-suan-guo-cheng/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -584,15 +595,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/NLP/">
-                                    <span class="chip bg-color">NLP</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                    <span class="chip bg-color">论文</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1025,70 +1028,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/03/20/bert-xiang-jie/">
+                <a href="/2021/05/24/self-attention-ji-suan-guo-cheng/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Self-Attention计算过程">
                         
-                        <span class="card-title">BERT 详解</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                    论文阅读
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/NLP/">
-                        <span class="chip bg-color">NLP</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%AE%BA%E6%96%87/">
-                        <span class="chip bg-color">论文</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/03/01/an-zhuang-node.js/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
-                        
-                        <span class="card-title">Nodejs 的安装</span>
+                        <span class="card-title">Self-Attention计算过程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1099,35 +1050,53 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-24
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
                             
                         </span>
                     </div>
                 </div>
+
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/nodejs/">
-                        <span class="chip bg-color">nodejs</span>
-                    </a>
-                    
-                    <a href="/tags/npm/">
-                        <span class="chip bg-color">npm</span>
-                    </a>
-                    
-                    <a href="/tags/yarn/">
-                        <span class="chip bg-color">yarn</span>
-                    </a>
-                    
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/03/23/xlnet/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="XLNet">
+                        
+                        <span class="card-title">XLNet</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
+                            
+                        </span>
+                    </div>
                 </div>
                 
             </div>
