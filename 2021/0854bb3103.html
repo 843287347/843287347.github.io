@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="The Transformer 详解, 李贤的博客">
+    <meta name="keywords" content="Batch Normalization 和 Layer Normalization, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>The Transformer 详解 | 李贤的博客</title>
+    <title>Batch Normalization 和 Layer Normalization | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">The Transformer 详解</h1>
+                    <h1 class="description center-align post-title">Batch Normalization 和 Layer Normalization</h1>
                 </div>
             </div>
         </div>
@@ -429,29 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/NLP/">
-                                <span class="chip bg-color">NLP</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                <span class="chip bg-color">论文</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                论文阅读
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -460,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-20
+                    2021-08-12
                 </div>
                 
 
@@ -469,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    685
                 </div>
                 
 
@@ -504,28 +487,105 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>对于构建语言模型和机器翻译等任务，使用基于Seq2Seq架构的RNN、LSTM、GRU等传统方法，已经取得了非常好的效果。尽管目前使用了一系列的方法，提升了RNNs的效率，例如使用因式分解，条件计算等技巧。但是RNNs根本的的缺陷并没有解决，还一直保留着。</p>
-<p>注意力机制（Attention mechanisms）已经是序列建模（sequence  modeling）和传导模型（transduction model）的不可或缺的部分。它可以找到输入、输出序列之间的依赖程度，而不依赖于词与词之间的距离。</p>
-<p>在论文中，提出了Transformer模型，它抛弃了循环神经网络，而是完全依赖于注意力机制的一种模型结构。</p>
-<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>目前效果好的神经序列传导模型都是基于encoder-decoder的结构。它的encoder部分是将符号序列表示$(x_1,…,x_n)$ 映射到连续的表示$z=(z_1,…,z_n)$，然后对于decoder部分，将$z$ 作为输入，最终输出符号序列$(y_1,…,y_m)$ ，在每一个时间步长都是自回归的：将$t-1$生成的输出，作为$t$的输入。</p>
-<p>Transformer的模型结构如下所示：</p>
-<p><img src="https://i.loli.net/2021/03/20/EZduNkxml2DQ83c.png" alt="Transformer结构"></p>
-<h4 id="编码器和解码器"><a href="#编码器和解码器" class="headerlink" title="编码器和解码器"></a>编码器和解码器</h4><p><strong>Encoder：</strong> 这个编码器是由6个相同的层堆叠构成的，其中的每一层中包括两个子层。第一个子层是<strong>多头注意力机制</strong> ，第二个子层就是简单的<strong>全连接前馈网络</strong>。在每一个子层中都是用了<strong>残差连接（residual connections）</strong>和<strong>层正则化（layer normalization）</strong>。对于每一个子层，它的输出就相当于<br>$$<br>LayerNorm(x + SubLayer(x))<br>$$<br>同时为了方便，所有的输出维度都是$d_{model}=512$。</p>
-<p><strong>Decoder：</strong> 和编码器一样，解码器也是由6个相同的层堆叠构成的。对于每一个层，除了有相同的子层之外，还添加了第三个子层，它主要是是用于处理Encoder输出的序列。和Encoder一样也是使用了残差连接和层正则化。不同的是，修改了第一个子层的多头注意力机制，通过<strong>掩盖</strong>的方式，让解码器不能处理后面的内容。（例如，假如预测下一个词任务是，已知的信息只能是前面已经出现过的词，因此需要将多余的信息抹去）。</p>
-<h4 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h4><p><strong>Scaled Dot-Product Attention</strong></p>
-<p>注意力机制可以描述成，给定一个查询、键-值对映射到一个输出向量。在这里使用了特定了“Scaled Dot-Product Attention”注意力计算方法。它的计算公式是<br>$$<br>Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V<br>$$<br>与additive attention 和dot-product 计算方法不同的是，它除以了$\sqrt{d_k}$，它可以很好地克服梯度很小的问题。</p>
-<p><img src="https://i.loli.net/2021/03/20/tRqS1NehIHPmBn7.png" alt="Scaled Dot-Product Attention计算流程"></p>
-<p><strong>Multi-Head Attention</strong></p>
-<p>多头注意力，就是通过$h$次线性投影，生成$h$个注意力层并分别计算权重。其中每一个注意力层都是通过Scaled Dot-Product Attention函数计算，最终将输出结果重新拼接到一起</p>
-<p><img src="https://i.loli.net/2021/03/20/thM1qoXaFwcLQPE.png" alt="Multi-Head Attention"></p>
-<p>使用数学公式描述就是</p>
-<p>$$<br>MultiHead(Q,K,V) = Concat(head_1,…,head_h)W^o<br>$$</p>
-<p>$$<br>head_i =Attention(QW_i^Q,KW_i^K,VW_i^V)<br>$$</p>
-<h4 id="基于位置的前馈神经网络"><a href="#基于位置的前馈神经网络" class="headerlink" title="基于位置的前馈神经网络"></a>基于位置的前馈神经网络</h4><p>除了<strong>多头自注意机制</strong> ，在编码器和解码器的每一个层都包含了前馈全连接网络。它是由两个线性变化层和ReLU函数构成。<br>$$<br>FFN(x) =max(0,xW_1 + b_1)W_2 +b_2<br>$$</p>
-<p><strong>位置编码</strong></p>
-<p>因为循环神经网络可以很好的处理时序信息，而使用注意力机制的时候，并不能很好的提供位置信息，因此需要给添加一个位置编码。有多种位置编码的方法，在原论文中，使用了三角函数的位置编码：<br>$$<br>PE（pos,2i） = sin(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$$<br>PE（pos,2i+1) = cos(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$i$是位置编码的为第$i$个维度。</p>
+                <h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><p>介绍：</p>
+<p>Batch Normalization是在2015年提出的。</p>
+<img src="../images/BN和LN/image-20210812195105245.png" alt="image-20210812195105245" style="zoom: 33%;" />
+
+<p>在训练模型的时候，我们需要寻找最小值点。假设现在有两个维度$w_1$和$w_2$，当输入是较小的$x_1$​时，它对Loss的影响会较小，当输入是较大的$x_2$​​时，对Loss的影响就较大。</p>
+<p>能不能有一种方法，让两个维度$w_1$和$w_2$​具有相同的数值范围，如右上角图。</p>
+<img src="../images/BN和LN/image-20210812195653665.png" alt="image-20210812195653665" style="zoom:33%;" />
+
+<p>有一种方法，我们可以叫做特征归一化（Feature Normalization）。例如，现在有$R$​个input，我们称一个Batch，对每一个input的第$i$​​​​​个维度（绿色框框）做归一化。</p>
+<p><code>torch.nn.BatchNorm1d</code>计算公式：<br>$$<br>y = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}} * \gamma + \beta<br>$$<br>Pytorch中实现的API：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn <span class="token keyword">as</span> nn
+
+<span class="token comment"># 设置随机种子</span>
+torch<span class="token punctuation">.</span>manual_seed<span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 测试</span>
+m <span class="token operator">=</span> nn<span class="token punctuation">.</span>BatchNorm1d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token builtin">input</span> <span class="token operator">=</span> torch<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token builtin">input</span>
+<span class="token operator">>></span> tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.1115</span><span class="token punctuation">,</span>  <span class="token number">0.1204</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.3696</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+           <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.2404</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.1969</span><span class="token punctuation">,</span>  <span class="token number">0.2093</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+output <span class="token operator">=</span> m<span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">)</span>
+output
+<span class="token operator">>></span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">0.9988</span><span class="token punctuation">,</span>  <span class="token number">1.0000</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.9999</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        	<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.9988</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0000</span><span class="token punctuation">,</span>  <span class="token number">0.9999</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> grad_fn<span class="token operator">=</span><span class="token operator">&lt;</span>NativeBatchNormBackward<span class="token operator">></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据计算公式，我们一步一步计算</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># step 1 计算每一列的平均值，这里设置 axis=0</span>
+mean_in <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+mean_in
+<span class="token operator">>></span> tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.1759</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5383</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.0802</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># step 2 同样，计算每一列的方差，设置 axis=0</span>
+var_in <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">.</span>var<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> unbiased<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+var_in 
+<span class="token operator">>></span> tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.0042</span><span class="token punctuation">,</span> <span class="token number">0.4338</span><span class="token punctuation">,</span> <span class="token number">0.0838</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># step 3 计算input的Batch Normalization</span>
+BN <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">input</span> <span class="token operator">-</span> mean_in<span class="token punctuation">)</span> <span class="token operator">/</span> torch<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>var_in <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span>
+BN
+<span class="token operator">>></span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">0.9988</span><span class="token punctuation">,</span>  <span class="token number">1.0000</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.9999</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+       		<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.9988</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.0000</span><span class="token punctuation">,</span>  <span class="token number">0.9999</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="Layer-Normalization"><a href="#Layer-Normalization" class="headerlink" title="Layer Normalization"></a>Layer Normalization</h3><p>介绍：</p>
+<p>Layer Normalization 为了解决在RNN中使用BN效果不好的问题。</p>
+<p>Pytorch中实现的API：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">input2 <span class="token operator">=</span> torch<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+input2
+<span class="token operator">>></span> tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.1514</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2.4449</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+         		<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.0952</span><span class="token punctuation">,</span>  <span class="token number">0.5930</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+        	 <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.6707</span><span class="token punctuation">,</span>  <span class="token number">0.1656</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+         		<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2.2118</span><span class="token punctuation">,</span>  <span class="token number">0.0809</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 对最后两个维度进行Normalization</span>
+m2 <span class="token operator">=</span> nn<span class="token punctuation">.</span>LayerNorm<span class="token punctuation">(</span>input2<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+output2 <span class="token operator">=</span> m2<span class="token punctuation">(</span>input2<span class="token punctuation">)</span>
+output2
+<span class="token operator">>></span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">0.3255</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.6745</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+           <span class="token punctuation">[</span> <span class="token number">0.3745</span><span class="token punctuation">,</span>  <span class="token number">0.9746</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  
+          <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.7252</span><span class="token punctuation">,</span>  <span class="token number">1.0232</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+           <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.2405</span><span class="token punctuation">,</span>  <span class="token number">0.9425</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> grad_fn<span class="token operator">=</span><span class="token operator">&lt;</span>NativeLayerNormBackward<span class="token operator">></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据计算公式，我们一步一步计算：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># step1: 计算后两个维度（即整个矩阵）的平均值</span>
+mean_in0 <span class="token operator">=</span> input2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+mean_in1 <span class="token operator">=</span> input2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+mean_in0<span class="token punctuation">,</span> mean_in1
+<span class="token operator">>></span><span class="token punctuation">(</span>tensor<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.5246</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tensor<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.9090</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># step2: 计算后两个维度（即整个矩阵）的方差</span>
+var_in0 <span class="token operator">=</span> input2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>var<span class="token punctuation">(</span>unbiased<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span> 
+var_in1 <span class="token operator">=</span> input2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>var<span class="token punctuation">(</span>unbiased<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span> 
+var_in0<span class="token punctuation">,</span> var_in1
+<span class="token operator">>></span><span class="token punctuation">(</span>tensor<span class="token punctuation">(</span><span class="token number">1.3151</span><span class="token punctuation">)</span><span class="token punctuation">,</span> tensor<span class="token punctuation">(</span><span class="token number">1.1030</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># step3: 对第一个矩阵（即input[0,:,:]）进行Normalization</span>
+<span class="token punctuation">(</span>input2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">-</span> mean_in0<span class="token punctuation">)</span> <span class="token operator">/</span> torch<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>var_in0 <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span>
+<span class="token operator">>></span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">0.3255</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.6745</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          <span class="token punctuation">[</span> <span class="token number">0.3745</span><span class="token punctuation">,</span>  <span class="token number">0.9746</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># step4: 对第二个矩阵（即input[1,:,:]) 进行Normalization</span>
+<span class="token punctuation">(</span>input2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> mean_in1<span class="token punctuation">)</span> <span class="token operator">/</span> torch<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>var_in1 <span class="token operator">+</span> <span class="token number">1e</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span>
+<span class="token operator">>></span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.7252</span><span class="token punctuation">,</span>  <span class="token number">1.0232</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.2405</span><span class="token punctuation">,</span>  <span class="token number">0.9425</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中有几个细节需要注意，根据Pytorch的文档，</p>
+<ol>
+<li>在BN上面用的方差，不是无偏的，即设置参数<code>unbiased=False</code>。（假设样本数为N，无偏是除以N-1，有偏是除以N）</li>
+<li>$\gamma=1$，$\epsilon=1e-5$ ，$\beta =0$​​，是Pytorch中设置的默认值</li>
+<li>一般RNN和Transformer中会用Layer Normalization，CNN和MLP中会用到Batch Normalization。</li>
+</ol>
+<p>参考资料：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://speech.ee.ntu.edu.tw/~hylee/ml/ml2021-course-data/normalization_v4.pdf">李宏毅Batch Normalization</a></li>
+<li><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm1d.html#torch.nn.BatchNorm1d">Pytorch文档-BN</a></li>
+<li><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.LayerNorm.html#torch.nn.LayerNorm">Pytorch文档-LN</a></li>
+</ol>
 
                 
             </div>
@@ -552,7 +612,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/035a37797c.html">https://github.com/843287347/843287347.github.io/2021/035a37797c.html</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/0854bb3103.html">https://github.com/843287347/843287347.github.io/2021/0854bb3103.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -589,15 +649,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/NLP/">
-                                    <span class="chip bg-color">NLP</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                    <span class="chip bg-color">论文</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1030,70 +1082,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/03b64dfe63.html">
+                <a href="/2021/0854bb3103.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Batch Normalization 和 Layer Normalization">
                         
-                        <span class="card-title">BERT 详解</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                    论文阅读
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/NLP/">
-                        <span class="chip bg-color">NLP</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%AE%BA%E6%96%87/">
-                        <span class="chip bg-color">论文</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/03a22cd65e.html">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
-                        
-                        <span class="card-title">Nodejs 的安装</span>
+                        <span class="card-title">Batch Normalization 和 Layer Normalization</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1104,35 +1104,53 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-12
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
                             
                         </span>
                     </div>
                 </div>
+
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/nodejs/">
-                        <span class="chip bg-color">nodejs</span>
-                    </a>
-                    
-                    <a href="/tags/npm/">
-                        <span class="chip bg-color">npm</span>
-                    </a>
-                    
-                    <a href="/tags/yarn/">
-                        <span class="chip bg-color">yarn</span>
-                    </a>
-                    
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/085ae30290.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="使用torchtext 库进行文本分类">
+                        
+                        <span class="card-title">使用torchtext 库进行文本分类</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            使用Pytorch中TorchText，快速的完成一个较完整的文本分类任务。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
+                            
+                        </span>
+                    </div>
                 </div>
                 
             </div>

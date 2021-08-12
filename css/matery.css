@@ -827,7 +827,8 @@ header .go-back i {
     max-width: 500px;
     height: 65px;
     max-height: 65px;
-    font-size: 14px;
+    /* font-size: 14px; */
+    font-size: 17px;
     color: hsla(0, 0%, 100%, .78) !important;
 }
 
