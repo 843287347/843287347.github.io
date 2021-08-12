@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Nodejs 的安装, 李贤的博客">
+    <meta name="keywords" content="Self-Attention 计算过程, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Nodejs 的安装 | 李贤的博客</title>
+    <title>Self-Attention 计算过程 | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,7 +315,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Nodejs 的安装</h1>
+                    <h1 class="description center-align post-title">Self-Attention 计算过程</h1>
                 </div>
             </div>
         </div>
@@ -429,33 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/nodejs/">
-                                <span class="chip bg-color">nodejs</span>
-                            </a>
-                        
-                            <a href="/tags/npm/">
-                                <span class="chip bg-color">npm</span>
-                            </a>
-                        
-                            <a href="/tags/yarn/">
-                                <span class="chip bg-color">yarn</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                前端
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -464,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-01
+                    2021-05-24
                 </div>
                 
 
@@ -473,14 +452,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    372
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -508,67 +487,62 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/13f45e24b1de">https://www.jianshu.com/p/13f45e24b1de</a></p>
-<h2 id="安装Node-js-、-npm、yarn"><a href="#安装Node-js-、-npm、yarn" class="headerlink" title="安装Node.js 、 npm、yarn"></a>安装Node.js 、 npm、yarn</h2><p>1.下载node.js，自带了npm，下载地址：<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></p>
-<p><img src="https://i.loli.net/2021/01/23/iPxpoE2wrAcQWaT.png" alt="image-20210118153622211"></p>
-<p>2.安装，一直next。记住你<strong>安装的路径</strong>，我的是D:\nodejs</p>
-<p>3.验证是否安装成功</p>
-<p> win + r ，打开 cmd。 </p>
+                <blockquote>
+<p>学习了李宏毅老师的机器学习2021课程，讲的很清晰，值得记录一下。原视频：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=hYdO9CscNes%E3%80%82">https://www.youtube.com/watch?v=hYdO9CscNes。</a></p>
+</blockquote>
+<h3 id="为什么要用Self-Attention"><a href="#为什么要用Self-Attention" class="headerlink" title="为什么要用Self-Attention"></a>为什么要用Self-Attention</h3><p>以序列标注任务（Sequence Labeling）为例。为了更好的理解某个单词的词性，我们需要<strong>尽可能多的考虑到整句话的内容</strong>。例如下面这句话：</p>
+<blockquote>
+<p>I saw a saw</p>
+</blockquote>
+<p>我们要考虑整句话的内容，才能判断出第一个 <em>saw</em> 和第二个<em>saw</em>的词性。</p>
+<p>产生一个问题：我们是否有一种方法，它可以考虑到整个句子的所有的词。</p>
+<h3 id="Self-Attention怎么运作的"><a href="#Self-Attention怎么运作的" class="headerlink" title="Self-Attention怎么运作的"></a>Self-Attention怎么运作的</h3><p><img src="/../images/Self-Attention/self-frame.PNG" alt="self-attention框架"></p>
+
+
+<p>在图中，最下面是input的四个单词向量，通过了Self-attention后，会输出带有上下文信息的单词向量（with context）。然后再通过一个全连接层（Fully Connect）。值得注意的是，我们可以重复这样的一个过程，通过叠加自注意层和FC层。其中比较著名的例子就是The Transformer。</p>
+<p><img src="/../images/Self-Attention/frame-2.png" alt="内部结构"></p>
+<p>在这个图中，可以看到input是 $a^1,…,a^4$，output是$b^1,…,b^4$。</p>
+<p>我们以$b^1$为例，从虚线可以看出，向量$b^1$的产生考虑到了$a^1,…,a^4$四个输入的信息，因此我们可以认为$b^1$是包含了上下文的信息。同理$b^2,…,b^4$也是考虑了所有的输入向量。</p>
+<p><strong>如何考虑与其他词的关系呢</strong></p>
+<p><img src="/../images/Self-Attention/frame-3.png"></p>
+<p>我们需要去判断两个词的相关性，其相关程度我们以$\alpha$ 来表示，也可以成它为分数。</p>
+<p>关于$\alpha$的计算有很多种方法，我们可以将计算$\alpha$的方法称为<strong>分数函数</strong>。其中<strong>dot-product</strong> 方法最常用，我们以它为例。</p>
+<p><img src="/../images/Self-Attention/cal-1.png"></p>
+<p>已知，input向量分别是$a^1,…,a^4$ </p>
 <ul>
-<li><p>测试node -v</p>
-<p><img src="/%E5%AE%89%E8%A3%85Node.js/node-v.jpg" alt="查看node版本"></p>
+<li><p>让他们乘上一个矩阵$W^q$，得到了query向量$q^1,…,q^4$。</p>
 </li>
-<li><p>测试npm -v</p>
-</li>
-<li><p>测试npm install express -g ，安装express包，-g 表示全局</p>
+<li><p>同理分别乘上一个矩阵$W^k$，得到了key向量$k^1,…,k^4$。</p>
 </li>
 </ul>
-<p>4.更改库的安装路径</p>
-<p>​    找到你nodejs的安装路径，例如D:\nodejs。</p>
-<ol>
-<li><p>新建两个文件夹，分别是<strong>node_cache</strong>、<strong>node_global</strong>。</p>
-<p>​    node_cache文件夹为nodejs的缓存目录</p>
-<p>​    node_global文件夹为nodejs的全局目录</p>
+<p>我们让$q^1$ 和$k^2$ 相乘，得到一个标量$a_{1,2}$，表示$a_1$对$a_2$的注意程度。同理我们分别让$q^1$与$k^3,k^4,k^1$相乘，可以计算出$a_{1,3} ,a_{1,4},a_{1,1}$ 。</p>
+<p>为了让数据更加规范，我们通过Softmax函数进行归一化处理，得到$a_{1,1}^{\prime} ,…,a_{1,4}^\prime$。</p>
+<p><img src="/../images/Self-Attention/cal-2.png"></p>
+<ul>
+<li><p>然后我们让$a^1,…,a^4$ 乘上矩阵$W^v$就可以得到value向量$v^1,…,v^4$。</p>
 </li>
-</ol>
-<p><img src="/%E5%AE%89%E8%A3%85Node.js/cache.jpg" alt="安装路径"></p>
-<ol start="2">
-<li><p>设置npm的安装路径</p>
-<p>记住<strong>你的安装路径</strong>，我的是D:\nodejs    </p>
-<p>打开cmd或者 windows powershell，输入</p>
-<p><code>npm config set prefix &quot;D:\nodejs\node_global&quot;</code></p>
-<p><code> npm config set cache &quot;D:\nodejs\node_cache&quot;</code></p>
+<li><p>最后通过加权求和，我们就得到$a^1$对应的output向量$b^1$。</p>
 </li>
-<li><p>再次安装express，验证安装到指定目录。</p>
-<p>用<strong>管理员</strong>身份打开，或者win + x ，打开windows powershell (管理员)</p>
-<p>输入<code>npm install express -g</code></p>
-<p>可以看到，安装了express包到了指定文件夹中</p>
-</li>
-<li><p>添加环境变量</p>
-<p>win + r ，输入<code>sysdm.cpl</code></p>
-<p>选择，高级，环境变量</p>
-<p><img src="https://i.loli.net/2021/01/23/7KjIJfF5XvwazCb.png" alt="image-20210118160722979"></p>
-</li>
-</ol>
-<p>选择系统变量的Path，编辑<img src="https://i.loli.net/2021/01/23/GsDacMdyeRnTOh4.png" alt="image-20210118160801663"></p>
-<p>新建，输入路径D:\nodejs\node_global，保存并退出<img src="/%E5%AE%89%E8%A3%85Node.js/path.jpg" alt="路径"></p>
-<p>验证，win + x，选择 powershell 管理员。</p>
-<p>安装yarn: <code> npm install yarn -g</code></p>
-<p>验证：<code>yarn --version</code></p>
-<p><img src="https://i.loli.net/2021/01/23/2B9KXbMzCJNeonc.png" alt="image-20210118161125959"></p>
-<h2 id="用visual-studio-code-打开项目文件夹"><a href="#用visual-studio-code-打开项目文件夹" class="headerlink" title="用visual studio code 打开项目文件夹"></a>用visual studio code 打开项目文件夹</h2><p> 打开终端，输入<code>yarn</code>，安装依赖</p>
-<p><img src="https://i.loli.net/2021/01/23/mdbO7NMuolj8fi1.png" alt="image-20210118161856121"></p>
-<p>安装完成后，输入<code>yarn start</code></p>
-<p>等待打包，运行程序。</p>
-<p>进入Local 网页</p>
-<p><img src="https://i.loli.net/2021/01/23/klQZJpzvDOCo7FT.png" alt="image-20210118162240548"></p>
-<p>安装插件：</p>
-<p>HTML snippets</p>
-<p>JavaScript (ES6) code snippets</p>
-<p>CSS Peek</p>
-<p>Path autocomplete</p>
-<p>Reactjs code snippets</p>
-<p>ESLint</p>
+</ul>
+<p>其中output向量$b^1$，它具有上下问信息，因为它是通过“<strong>注意</strong>”其他词并且加权求和得到的向量。</p>
+<p>同理，我们可以通过上面的方法，分别求出$a^2,a^3,a^4$对应的输出$b^2,b^3,b^4$。</p>
+<h3 id="用矩阵乘法的角度"><a href="#用矩阵乘法的角度" class="headerlink" title="用矩阵乘法的角度"></a>用矩阵乘法的角度</h3><p>与RNNs不同的是，自注意力机制可以通过矩阵的乘法来实现并行运算，而RNNs需要依赖前一个时间步长的输出。下面就是介绍用矩阵来计算。</p>
+<p> 对于每一个向量$a^1,…,a^4$，我们分别计算他们的$q^i,k^i,v^i,i\in{1,..,4}$ 。</p>
+<p><img src="/../images/Self-Attention/mat-1.png"></p>
+<p>以向量$q^i$为例，我们将$W^q$乘上$a^1$得到$q^1$，乘上$a^2$得到$q^2$，以此类推。</p>
+<p>其实我们可以将$a^1,…,a^4$ 拼成一个矩阵$I$ ，让$W^q$ 乘上$I$ 就得到矩阵$Q$。其中$Q = {q^1,q^2,q^3,q^4}$。同理也可以得到矩阵$K$ 和$V$。</p>
+<p><strong>计算注意力分数</strong></p>
+<p>我们用$\alpha_{i,j}$ 表示$a^i$ 注意$a^j$的分数。</p>
+<p><img src="/../images/Self-Attention/mat-2.png"></p>
+<p>我们让$k^1,…,k^4$ 竖着拼成一个矩阵$K^T$，再乘上$q^1$ 就可以得到$\alpha_{1,1},…,\alpha_{1,4}$，同理乘上$q^2,q^3,q^4$。</p>
+<p>用矩阵表示就是$A = K^T Q$</p>
+<p>我们可以得到注意力分数矩阵$A$ ，然后通过Softmax得到所有的归一化的分数矩阵$A\prime。$</p>
+<p><img src="/../images/Self-Attention/mat-3.png"></p>
+<p><strong>加权求和得到输出向量</strong></p>
+<p>再这里也是一样，我们让$v^1$ 乘上分数矩阵$A\prime$ 就可以得到$b^1$，同理可以得到$b^2,…,b^4$。</p>
+<p>用矩阵表示就是$O = V A\prime$</p>
+<p><img src="/../images/Self-Attention/mat-4.png"></p>
+<p>整体流程如上，其中$W^q,W^k,W^v$ 是需要模型学习的参数，其他都是固定的。</p>
 
                 
             </div>
@@ -595,7 +569,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/03/01/an-zhuang-node.js/">https://github.com/843287347/843287347.github.io/2021/03/01/an-zhuang-node.js/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/05ea3b0939.html/">https://github.com/843287347/843287347.github.io/2021/05ea3b0939.html/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -632,19 +606,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/nodejs/">
-                                    <span class="chip bg-color">nodejs</span>
-                                </a>
-                            
-                                <a href="/tags/npm/">
-                                    <span class="chip bg-color">npm</span>
-                                </a>
-                            
-                                <a href="/tags/yarn/">
-                                    <span class="chip bg-color">yarn</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1081,13 +1043,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/03/20/the-transformer-xiang-jie/">
+                <a href="/2021/064a17b156.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="The Transformer 详解">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
                         
-                        <span class="card-title">The Transformer 详解</span>
+                        <span class="card-title">Hello World</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1098,31 +1060,15 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-04
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                    论文阅读
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/NLP/">
-                        <span class="chip bg-color">NLP</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%AE%BA%E6%96%87/">
-                        <span class="chip bg-color">论文</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1134,13 +1080,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/02/07/lunwen-dialogpt/">
+                <a href="/2021/032a651e9f.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="DIALOGPT Large-Scale Generative Pre-trainingfor Conversational Response Generation">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="XLNet">
                         
-                        <span class="card-title">DIALOGPT Large-Scale Generative Pre-trainingfor Conversational Response Generation</span>
+                        <span class="card-title">XLNet</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1151,31 +1097,15 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-23
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                    论文阅读
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/NLP/">
-                        <span class="chip bg-color">NLP</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%AE%BA%E6%96%87/">
-                        <span class="chip bg-color">论文</span>
-                    </a>
-                    
                 </div>
                 
             </div>

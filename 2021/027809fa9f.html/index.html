@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Self-Attention 计算过程, 李贤的博客">
+    <meta name="keywords" content="DIALOGPT Large-Scale Generative Pre-trainingfor Conversational Response Generation, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Self-Attention 计算过程 | 李贤的博客</title>
+    <title>DIALOGPT Large-Scale Generative Pre-trainingfor Conversational Response Generation | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Self-Attention 计算过程</h1>
+                    <h1 class="description center-align post-title">DIALOGPT Large-Scale Generative Pre-trainingfor Conversational Response Generation</h1>
                 </div>
             </div>
         </div>
@@ -429,12 +429,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/NLP/">
+                                <span class="chip bg-color">NLP</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%AE%BA%E6%96%87/">
+                                <span class="chip bg-color">论文</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                论文阅读
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -443,7 +460,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-05-24
+                    2021-02-07
                 </div>
                 
 
@@ -452,14 +469,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -487,62 +504,43 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>学习了李宏毅老师的机器学习2021课程，讲的很清晰，值得记录一下。原视频：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=hYdO9CscNes%E3%80%82">https://www.youtube.com/watch?v=hYdO9CscNes。</a></p>
+                <h2 id="《DialoGPT-Large-Scale-Generative-Pre-training-for-Conversational-Response-Generation》"><a href="#《DialoGPT-Large-Scale-Generative-Pre-training-for-Conversational-Response-Generation》" class="headerlink" title="《DialoGPT : Large-Scale Generative Pre-training for Conversational Response Generation》"></a><strong>《DialoGPT : Large-Scale Generative Pre-training for Conversational Response Generation》</strong></h2><blockquote>
+<p>该论文发表在ACL-2020，是由Microsoft团队<strong>Yizhe Zhang</strong> 、<strong>Siqi Sun</strong>等作者共同完成的。</p>
 </blockquote>
-<h3 id="为什么要用Self-Attention"><a href="#为什么要用Self-Attention" class="headerlink" title="为什么要用Self-Attention"></a>为什么要用Self-Attention</h3><p>以序列标注任务（Sequence Labeling）为例。为了更好的理解某个单词的词性，我们需要<strong>尽可能多的考虑到整句话的内容</strong>。例如下面这句话：</p>
-<blockquote>
-<p>I saw a saw</p>
-</blockquote>
-<p>我们要考虑整句话的内容，才能判断出第一个 <em>saw</em> 和第二个<em>saw</em>的词性。</p>
-<p>产生一个问题：我们是否有一种方法，它可以考虑到整个句子的所有的词。</p>
-<h3 id="Self-Attention怎么运作的"><a href="#Self-Attention怎么运作的" class="headerlink" title="Self-Attention怎么运作的"></a>Self-Attention怎么运作的</h3><p><img src="/../images/Self-Attention/self-frame.PNG" alt="self-attention框架"></p>
-
-
-<p>在图中，最下面是input的四个单词向量，通过了Self-attention后，会输出带有上下文信息的单词向量（with context）。然后再通过一个全连接层（Fully Connect）。值得注意的是，我们可以重复这样的一个过程，通过叠加自注意层和FC层。其中比较著名的例子就是The Transformer。</p>
-<p><img src="/../images/Self-Attention/frame-2.png" alt="内部结构"></p>
-<p>在这个图中，可以看到input是 $a^1,…,a^4$，output是$b^1,…,b^4$。</p>
-<p>我们以$b^1$为例，从虚线可以看出，向量$b^1$的产生考虑到了$a^1,…,a^4$四个输入的信息，因此我们可以认为$b^1$是包含了上下文的信息。同理$b^2,…,b^4$也是考虑了所有的输入向量。</p>
-<p><strong>如何考虑与其他词的关系呢</strong></p>
-<p><img src="/../images/Self-Attention/frame-3.png"></p>
-<p>我们需要去判断两个词的相关性，其相关程度我们以$\alpha$ 来表示，也可以成它为分数。</p>
-<p>关于$\alpha$的计算有很多种方法，我们可以将计算$\alpha$的方法称为<strong>分数函数</strong>。其中<strong>dot-product</strong> 方法最常用，我们以它为例。</p>
-<p><img src="/../images/Self-Attention/cal-1.png"></p>
-<p>已知，input向量分别是$a^1,…,a^4$ </p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>这篇论文提出了一个大型、可微调的神经对话响应生成模型，<strong>DialoGPT</strong>。是从Reddit中2005年至2017年的聊天对话数据中训练得来的。DialoGPT扩展了Huging Face PyTorch的transformer，使其在单论对话性能接近人类。作者表明，DialoGPT的会话系统比其他系统产生更加相关、内容更丰富以及上下文一致的响应。预先训练的模型和训练管道被公开发布，以促进神经响应生成的研究和开发更智能的开放域对话系统。</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>基于transformer结构的大规模预训练模型已经取得了很大成功。例如OpenAI的GPT-2已经证明，在非常大的数据集上训练的transformer模型可以捕获文本数据中的长期依赖关系，并生成流畅、词汇多样和内容丰富的文本。这样的模型有能力捕获细粒度的文本数据，并以高分辨率产生输出，该高分辨率紧密模拟人类编写的真实世界文本。</p>
+<p><strong>DialoGPT是在GPT-2的基础上拓展的</strong>，用于解决对话神经响应生成的问题。神经响应生成是文本生成的一个子类别，但是它们都是生成与提示相关的自然文本。目前大多数开放域神经响应生成系统存在一些问题，<strong>例如内容和风格不一致，缺乏长期的上下文信息和生成的响应过于平淡</strong>。</p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>该数据集是Reddit从2005年到2017年的评论链中提取的。<strong>Reddit的讨论可以自然地扩展为树状结构的回复链</strong>，将根节点到叶节点的每条路径作为包含多个对话回合的训练实例，并提取出来。我们通过删除其中的实例来过滤数据</p>
 <ul>
-<li><p>让他们乘上一个矩阵$W^q$，得到了query向量$q^1,…,q^4$。</p>
-</li>
-<li><p>同理分别乘上一个矩阵$W^k$，得到了key向量$k^1,…,k^4$。</p>
-</li>
+<li>源或目标中有一个URL。</li>
+<li>其中目标包含至少三个单词的单词重复。</li>
+<li>如果答复不包含至少一个最常见的50个英语单词(例如，“the”、“of”、“a”)，因为这可能表明它可能不是一个英语句子。</li>
+<li>其中响应包含特殊标记，如“[”或“]”，因为这可能是标记语言。</li>
+<li>其中源序列和目标序列一起超过200个单词。</li>
+<li>其中目标包含攻击性语言，由与大块列表匹配的短语标识。</li>
 </ul>
-<p>我们让$q^1$ 和$k^2$ 相乘，得到一个标量$a_{1,2}$，表示$a_1$对$a_2$的注意程度。同理我们分别让$q^1$与$k^3,k^4,k^1$相乘，可以计算出$a_{1,3} ,a_{1,4},a_{1,1}$ 。</p>
-<p>为了让数据更加规范，我们通过Softmax函数进行归一化处理，得到$a_{1,1}^{\prime} ,…,a_{1,4}^\prime$。</p>
-<p><img src="/../images/Self-Attention/cal-2.png"></p>
-<ul>
-<li><p>然后我们让$a^1,…,a^4$ 乘上矩阵$W^v$就可以得到value向量$v^1,…,v^4$。</p>
-</li>
-<li><p>最后通过加权求和，我们就得到$a^1$对应的output向量$b^1$。</p>
-</li>
-</ul>
-<p>其中output向量$b^1$，它具有上下问信息，因为它是通过“<strong>注意</strong>”其他词并且加权求和得到的向量。</p>
-<p>同理，我们可以通过上面的方法，分别求出$a^2,a^3,a^4$对应的输出$b^2,b^3,b^4$。</p>
-<h3 id="用矩阵乘法的角度"><a href="#用矩阵乘法的角度" class="headerlink" title="用矩阵乘法的角度"></a>用矩阵乘法的角度</h3><p>与RNNs不同的是，自注意力机制可以通过矩阵的乘法来实现并行运算，而RNNs需要依赖前一个时间步长的输出。下面就是介绍用矩阵来计算。</p>
-<p> 对于每一个向量$a^1,…,a^4$，我们分别计算他们的$q^i,k^i,v^i,i\in{1,..,4}$ 。</p>
-<p><img src="/../images/Self-Attention/mat-1.png"></p>
-<p>以向量$q^i$为例，我们将$W^q$乘上$a^1$得到$q^1$，乘上$a^2$得到$q^2$，以此类推。</p>
-<p>其实我们可以将$a^1,…,a^4$ 拼成一个矩阵$I$ ，让$W^q$ 乘上$I$ 就得到矩阵$Q$。其中$Q = {q^1,q^2,q^3,q^4}$。同理也可以得到矩阵$K$ 和$V$。</p>
-<p><strong>计算注意力分数</strong></p>
-<p>我们用$\alpha_{i,j}$ 表示$a^i$ 注意$a^j$的分数。</p>
-<p><img src="/../images/Self-Attention/mat-2.png"></p>
-<p>我们让$k^1,…,k^4$ 竖着拼成一个矩阵$K^T$，再乘上$q^1$ 就可以得到$\alpha_{1,1},…,\alpha_{1,4}$，同理乘上$q^2,q^3,q^4$。</p>
-<p>用矩阵表示就是$A = K^T Q$</p>
-<p>我们可以得到注意力分数矩阵$A$ ，然后通过Softmax得到所有的归一化的分数矩阵$A\prime。$</p>
-<p><img src="/../images/Self-Attention/mat-3.png"></p>
-<p><strong>加权求和得到输出向量</strong></p>
-<p>再这里也是一样，我们让$v^1$ 乘上分数矩阵$A\prime$ 就可以得到$b^1$，同理可以得到$b^2,…,b^4$。</p>
-<p>用矩阵表示就是$O = V A\prime$</p>
-<p><img src="/../images/Self-Attention/mat-4.png"></p>
-<p>整体流程如上，其中$W^q,W^k,W^v$ 是需要模型学习的参数，其他都是固定的。</p>
+<p>经过筛选，数据集包含147,116,725个对话实例，共计<strong>18亿字</strong>。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>DialoGPT是在GPT-2结构的基础上训练的。GPT-2 的transformer模型采用的是通用的transformer语言模型，利用掩码多头自注意层所构成的栈来训前文本数据。我们的模型继承了GPT-2(Radford等人，2018年)，它由12至48层transformer并且包括normalization层，一种解释我们修改的模型深度的初始化方案，以及字节对编码用于标记器。</p>
+<p>跟OpenAI的GPT-2一样，将多转对话会话建模为长文本，并将生成任务框架为语言建模。我们把源句子记作S，目标句子记作T，<br>$$<br>S= x_1, …,x_m ， T = x_{m+1},…,x_N<br>$$<br>其中N是序列长度，因此条件概率P(T|S)可以分解为：<br>$$<br>p(T|S) = \prod_{n=m+1}^N p(x_n | x_1,…,x_{n-1})<br>$$<br>多轮对话T1,…,Tk，上式也可以写作$p(T_k,…,T_2 | T_1)$ ，它本质上是条件概率$P(T_i | T_1,…,T_{i-1})$的累乘。因此优化单个$p(T_k,…,T_2 | T_1)$ ，可以视为优化所有的$P(T_i | T_1,…,T_{i-1})$对。</p>
+<h3 id="最大互信息"><a href="#最大互信息" class="headerlink" title="最大互信息"></a>最大互信息</h3><p>开放域文本生成模型因生成平淡无奇的、缺乏信息的样本而臭名昭著。 为了解决这个问题，实现了一个最大互信息（<strong>MMI</strong>）评分函数。<strong>MMI</strong>采用一个预先训练的反向模型来预测给定响应的源句子，即P（source|target）。</p>
+<p>首先使用top-K抽样生成一组假设。 然后利用P（source|Hypothesis）的概率对所有假设进行重新排序。 直觉上，最大限度地向后模型似然会惩罚平淡的假设。因为重复出现的假设可能与一些查询有关联，而对其他特定查询关联的概率很低。</p>
+<p>本文还试图使用policy梯度与样本平均基线来优化奖励R=P（source|Hypothesis）。好的奖励可以稳定地让模型提高，但与RNN体系结构下的训练不同，我们观察到强化学习(RL)训练很容易收敛到退化的局部最优解。</p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><h3 id="实验细节"><a href="#实验细节" class="headerlink" title="实验细节"></a>实验细节</h3><p>训练了三个不同大小的模型，他们的参数分别是117M，345M和762M。模型使用了一个包含50，257个条目的词典，并且在16个Nvidia V100机器上训练，使用了NVLink。使用了Noam学习速率调度器和16000个热身步骤。学习率根据验证损失选择。 每个模型都被训练，直到验证损失没有更新。 对于中小型模型，我们训练了多达5个epochs的模型。 训练的大模型3个epochs。</p>
+<p><strong>训练加速</strong>：将训练数据压缩至lazy-loading 数据库文件。还利用单独的异步数据进程来扩展训练。除此之外，进一步使用动态批处理策略将长度相似的会话分组到同一批中，从而提高了训练吞吐量。</p>
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p>基于DSTC的评价数据</p>
+<p><img src="https://i.loli.net/2021/02/07/czn2A4L1tlVXrmI.png" alt="image-20210207163620461"></p>
+<hr>
+<p>基于6K Reddit multi-reference 评价数据</p>
+<p><img src="https://i.loli.net/2021/02/07/DcXbMo7rxYpLR8w.png" alt="image-20210207163630238"></p>
+<p>在表格3中，相较于Greedy 生成，MMI重排后会产生更加多样的响应。具有更好的NIST、METEOR、Entropy和DIst分数，但是BLEU分有所下降。</p>
+<h3 id="生成的例子"><a href="#生成的例子" class="headerlink" title="生成的例子"></a>生成的例子</h3><p><img src="https://i.loli.net/2021/02/07/jlJgSbKiH9ZUd3W.png" alt="image-20210207164127603"></p>
+<p><img src="https://i.loli.net/2021/02/07/XD2kNIQfsTrRS56.png" alt="image-20210207164133258"></p>
+<p><img src="https://i.loli.net/2021/02/07/J9BwutckgbqW6Zs.png" alt="image-20210207164234170"></p>
+<h2 id="局限性和风险"><a href="#局限性和风险" class="headerlink" title="局限性和风险"></a>局限性和风险</h2><p>尽管我们努力在训练前减少具有攻击性的数据，但DialoGPT依然有可能会产生不好的回应。输出的数据中隐含的性别偏见和其他历史偏见。发布DialoGPT的一个主要动机是使研究人员能够调查这些问题并制定缓解策略。 在任何情况下都不应因使用DialoGPT而产生不适当的内容被解释为反映作者或微软公司的观点或价值观。</p>
+<p><strong>参考文献：</strong></p>
+<ol>
+<li>Zhang Y, Sun S, Galley M, et al. Dialogpt: Large-scale generative pre-training for conversational response generation[J]. arXiv preprint arXiv:1911.00536, 2019.</li>
+</ol>
 
                 
             </div>
@@ -569,7 +567,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/05/24/self-attention/">https://github.com/843287347/843287347.github.io/2021/05/24/self-attention/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/027809fa9f.html/">https://github.com/843287347/843287347.github.io/2021/027809fa9f.html/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -606,7 +604,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/NLP/">
+                                    <span class="chip bg-color">NLP</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%AE%BA%E6%96%87/">
+                                    <span class="chip bg-color">论文</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1043,13 +1049,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/06/04/hello-world/">
+                <a href="/2021/03a22cd65e.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">Nodejs 的安装</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1060,15 +1066,35 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-04
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Xian Li
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                    前端
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/nodejs/">
+                        <span class="chip bg-color">nodejs</span>
+                    </a>
+                    
+                    <a href="/tags/npm/">
+                        <span class="chip bg-color">npm</span>
+                    </a>
+                    
+                    <a href="/tags/yarn/">
+                        <span class="chip bg-color">yarn</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1080,13 +1106,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/03/23/xlnet/">
+                <a href="/2021/01350b5b04.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="XLNet">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Towards a Human-like Open-Domain Chatbot">
                         
-                        <span class="card-title">XLNet</span>
+                        <span class="card-title">Towards a Human-like Open-Domain Chatbot</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1097,15 +1123,31 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-23
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-31
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Xian Li
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                    论文阅读
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%AE%BA%E6%96%87/">
+                        <span class="chip bg-color">论文</span>
+                    </a>
+                    
                 </div>
                 
             </div>

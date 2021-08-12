@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="The Transformer 详解, 李贤的博客">
+    <meta name="keywords" content="git使用汇总, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>The Transformer 详解 | 李贤的博客</title>
+    <title>git使用汇总 | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">The Transformer 详解</h1>
+                    <h1 class="description center-align post-title">git使用汇总</h1>
                 </div>
             </div>
         </div>
@@ -431,12 +431,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/NLP/">
-                                <span class="chip bg-color">NLP</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                <span class="chip bg-color">论文</span>
+                            <a href="/tags/git/">
+                                <span class="chip bg-color">git</span>
                             </a>
                         
                     </div>
@@ -447,8 +443,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                论文阅读
+                            <a href="/categories/git/" class="post-category">
+                                git
                             </a>
                         
                     </div>
@@ -460,7 +456,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-20
+                    2021-01-29
                 </div>
                 
 
@@ -469,14 +465,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    164
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -504,28 +500,16 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>对于构建语言模型和机器翻译等任务，使用基于Seq2Seq架构的RNN、LSTM、GRU等传统方法，已经取得了非常好的效果。尽管目前使用了一系列的方法，提升了RNNs的效率，例如使用因式分解，条件计算等技巧。但是RNNs根本的的缺陷并没有解决，还一直保留着。</p>
-<p>注意力机制（Attention mechanisms）已经是序列建模（sequence  modeling）和传导模型（transduction model）的不可或缺的部分。它可以找到输入、输出序列之间的依赖程度，而不依赖于词与词之间的距离。</p>
-<p>在论文中，提出了Transformer模型，它抛弃了循环神经网络，而是完全依赖于注意力机制的一种模型结构。</p>
-<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>目前效果好的神经序列传导模型都是基于encoder-decoder的结构。它的encoder部分是将符号序列表示$(x_1,…,x_n)$ 映射到连续的表示$z=(z_1,…,z_n)$，然后对于decoder部分，将$z$ 作为输入，最终输出符号序列$(y_1,…,y_m)$ ，在每一个时间步长都是自回归的：将$t-1$生成的输出，作为$t$的输入。</p>
-<p>Transformer的模型结构如下所示：</p>
-<p><img src="https://i.loli.net/2021/03/20/EZduNkxml2DQ83c.png" alt="Transformer结构"></p>
-<h4 id="编码器和解码器"><a href="#编码器和解码器" class="headerlink" title="编码器和解码器"></a>编码器和解码器</h4><p><strong>Encoder：</strong> 这个编码器是由6个相同的层堆叠构成的，其中的每一层中包括两个子层。第一个子层是<strong>多头注意力机制</strong> ，第二个子层就是简单的<strong>全连接前馈网络</strong>。在每一个子层中都是用了<strong>残差连接（residual connections）</strong>和<strong>层正则化（layer normalization）</strong>。对于每一个子层，它的输出就相当于<br>$$<br>LayerNorm(x + SubLayer(x))<br>$$<br>同时为了方便，所有的输出维度都是$d_{model}=512$。</p>
-<p><strong>Decoder：</strong> 和编码器一样，解码器也是由6个相同的层堆叠构成的。对于每一个层，除了有相同的子层之外，还添加了第三个子层，它主要是是用于处理Encoder输出的序列。和Encoder一样也是使用了残差连接和层正则化。不同的是，修改了第一个子层的多头注意力机制，通过<strong>掩盖</strong>的方式，让解码器不能处理后面的内容。（例如，假如预测下一个词任务是，已知的信息只能是前面已经出现过的词，因此需要将多余的信息抹去）。</p>
-<h4 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h4><p><strong>Scaled Dot-Product Attention</strong></p>
-<p>注意力机制可以描述成，给定一个查询、键-值对映射到一个输出向量。在这里使用了特定了“Scaled Dot-Product Attention”注意力计算方法。它的计算公式是<br>$$<br>Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V<br>$$<br>与additive attention 和dot-product 计算方法不同的是，它除以了$\sqrt{d_k}$，它可以很好地克服梯度很小的问题。</p>
-<p><img src="https://i.loli.net/2021/03/20/tRqS1NehIHPmBn7.png" alt="Scaled Dot-Product Attention计算流程"></p>
-<p><strong>Multi-Head Attention</strong></p>
-<p>多头注意力，就是通过$h$次线性投影，生成$h$个注意力层并分别计算权重。其中每一个注意力层都是通过Scaled Dot-Product Attention函数计算，最终将输出结果重新拼接到一起</p>
-<p><img src="https://i.loli.net/2021/03/20/thM1qoXaFwcLQPE.png" alt="Multi-Head Attention"></p>
-<p>使用数学公式描述就是</p>
-<p>$$<br>MultiHead(Q,K,V) = Concat(head_1,…,head_h)W^o<br>$$</p>
-<p>$$<br>head_i =Attention(QW_i^Q,KW_i^K,VW_i^V)<br>$$</p>
-<h4 id="基于位置的前馈神经网络"><a href="#基于位置的前馈神经网络" class="headerlink" title="基于位置的前馈神经网络"></a>基于位置的前馈神经网络</h4><p>除了<strong>多头自注意机制</strong> ，在编码器和解码器的每一个层都包含了前馈全连接网络。它是由两个线性变化层和ReLU函数构成。<br>$$<br>FFN(x) =max(0,xW_1 + b_1)W_2 +b_2<br>$$</p>
-<p><strong>位置编码</strong></p>
-<p>因为循环神经网络可以很好的处理时序信息，而使用注意力机制的时候，并不能很好的提供位置信息，因此需要给添加一个位置编码。有多种位置编码的方法，在原论文中，使用了三角函数的位置编码：<br>$$<br>PE（pos,2i） = sin(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$$<br>PE（pos,2i+1) = cos(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$i$是位置编码的为第$i$个维度。</p>
+                <h2 id="git汇总"><a href="#git汇总" class="headerlink" title="git汇总"></a>git汇总</h2><p>不用老忘，好记性不如烂笔头（指键盘）。</p>
+<h3 id="如何创建一个新的github仓库"><a href="#如何创建一个新的github仓库" class="headerlink" title="如何创建一个新的github仓库"></a>如何创建一个新的github仓库</h3><ol>
+<li>一般都是先从github 或者gitte中新建好仓库（respository)。</li>
+<li>创建好仓库之后，这样就可以获取到仓库的链接（点击克隆/下载）。</li>
+<li>在你的电脑上新建一个文件夹，它是准备用来保存你项目代码的。</li>
+<li>右键这个文件夹，选择 <code>git bash</code> 。</li>
+<li>然后<code>git clone &quot;你的github 仓库的地址&quot;</code></li>
+<li>这样，你的本地仓库（文件夹）和 github 的仓库就绑定好了。</li>
+<li>把你的代码，复制到文件夹内，然后在bash里面<code>git push</code>。</li>
+</ol>
 
                 
             </div>
@@ -552,7 +536,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/03/20/the-transformer-xiang-jie/">https://github.com/843287347/843287347.github.io/2021/03/20/the-transformer-xiang-jie/</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/0120e93606.html/">https://github.com/843287347/843287347.github.io/2021/0120e93606.html/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -590,12 +574,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/NLP/">
-                                    <span class="chip bg-color">NLP</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                    <span class="chip bg-color">论文</span>
+                                <a href="/tags/git/">
+                                    <span class="chip bg-color">git</span>
                                 </a>
                             
                         </div>
@@ -1034,13 +1014,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/03/20/bert-xiang-jie/">
+                <a href="/2021/01350b5b04.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Towards a Human-like Open-Domain Chatbot">
                         
-                        <span class="card-title">BERT 详解</span>
+                        <span class="card-title">Towards a Human-like Open-Domain Chatbot</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1051,7 +1031,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-31
                         </span>
                         <span class="publish-author">
                             
@@ -1084,16 +1064,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/2021/03/01/an-zhuang-node.js/">
+                <a href="/2021/0120e93606.html/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="git使用汇总">
                         
-                        <span class="card-title">Nodejs 的安装</span>
+                        <span class="card-title">git使用汇总</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1104,33 +1084,26 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
+                            <a href="/categories/git/" class="post-category">
+                                    git
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/nodejs/">
-                        <span class="chip bg-color">nodejs</span>
-                    </a>
-                    
-                    <a href="/tags/npm/">
-                        <span class="chip bg-color">npm</span>
-                    </a>
-                    
-                    <a href="/tags/yarn/">
-                        <span class="chip bg-color">yarn</span>
+                    <a href="/tags/git/">
+                        <span class="chip bg-color">git</span>
                     </a>
                     
                 </div>
