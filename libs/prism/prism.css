@@ -36,7 +36,6 @@ pre[class*="language-"] {
 	margin: .5em 0;
 	overflow: auto;
 }
-
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
 	background: #2d2d2d;
@@ -49,7 +48,10 @@ pre[class*="language-"] {
 	white-space: normal;
 }
 
-.token.comment,
+.token.comment {
+	color:#45902d
+}
+
 .token.block-comment,
 .token.prolog,
 .token.doctype,
@@ -88,7 +90,9 @@ pre[class*="language-"] {
 .token.selector,
 .token.important,
 .token.atrule,
-.token.keyword,
+.token.keyword{
+	color:#e27a46
+}
 .token.builtin {
 	color: #cc99cd;
 }

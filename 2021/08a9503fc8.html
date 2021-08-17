@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Batch Normalization 和 Layer Normalization, 李贤的博客">
+    <meta name="keywords" content="BN和LN, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Batch Normalization 和 Layer Normalization | 李贤的博客</title>
+    <title>BN和LN | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Batch Normalization 和 Layer Normalization</h1>
+                    <h1 class="description center-align post-title">BN和LN</h1>
                 </div>
             </div>
         </div>
@@ -489,11 +489,11 @@
             <div id="articleContent">
                 <h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><p>介绍：</p>
 <p>Batch Normalization是在2015年提出的。</p>
-<img src="../images/BN和LN/image-20210812195105245.png" alt="image-20210812195105245" style="zoom: 33%;" />
+<img src="../../../../images/BN和LN/image-20210812195105245.png" alt="image-20210812195105245" style="zoom: 33%;" />
 
 <p>在训练模型的时候，我们需要寻找最小值点。假设现在有两个维度$w_1$和$w_2$，当输入是较小的$x_1$​时，它对Loss的影响会较小，当输入是较大的$x_2$​​时，对Loss的影响就较大。</p>
 <p>能不能有一种方法，让两个维度$w_1$和$w_2$​具有相同的数值范围，如右上角图。</p>
-<img src="../images/BN和LN/image-20210812195653665.png" alt="image-20210812195653665" style="zoom:33%;" />
+<img src="../../../../images/BN和LN/image-20210812195653665.png" alt="image-20210812195653665" style="zoom:33%;" />
 
 <p>有一种方法，我们可以叫做特征归一化（Feature Normalization）。例如，现在有$R$​个input，我们称一个Batch，对每一个input的第$i$​​​​​个维度（绿色框框）做归一化。</p>
 <p><code>torch.nn.BatchNorm1d</code>计算公式：<br>$$<br>y = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}} * \gamma + \beta<br>$$<br>Pytorch中实现的API：</p>
@@ -612,7 +612,7 @@ var_in0<span class="token punctuation">,</span> var_in1
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/0854bb3103.html">https://github.com/843287347/843287347.github.io/2021/0854bb3103.html</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2021/08a9503fc8.html">https://github.com/843287347/843287347.github.io/2021/08a9503fc8.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1087,13 +1087,13 @@ var_in0<span class="token punctuation">,</span> var_in1
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2021/0854bb3103.html">
+                <a href="/2021/08a9503fc8.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Batch Normalization 和 Layer Normalization">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="BN和LN">
                         
-                        <span class="card-title">Batch Normalization 和 Layer Normalization</span>
+                        <span class="card-title">BN和LN</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
