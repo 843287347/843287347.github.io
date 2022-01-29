@@ -439,12 +439,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/NLP/">
+                                <span class="chip bg-color">NLP</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/NLP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                NLP学习笔记
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -499,11 +516,11 @@
             <div id="articleContent">
                 <h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><p>介绍：</p>
 <p>Batch Normalization是在2015年提出的。</p>
-<img src="../../../../images/BN和LN/image-20210812195105245.png" alt="image-20210812195105245" style="zoom: 33%;" />
+<img src="../images/BN和LN/image-20210812195105245.png" alt="image-20210812195105245" style="zoom: 33%;" />
 
 <p>在训练模型的时候，我们需要寻找最小值点。假设现在有两个维度$w_1$和$w_2$，当输入是较小的$x_1$​时，它对Loss的影响会较小，当输入是较大的$x_2$​​时，对Loss的影响就较大。</p>
 <p>能不能有一种方法，让两个维度$w_1$和$w_2$​具有相同的数值范围，如右上角图。</p>
-<img src="../../../../images/BN和LN/image-20210812195653665.png" alt="image-20210812195653665" style="zoom:33%;" />
+<img src="../images/BN和LN/image-20210812195653665.png" alt="image-20210812195653665" style="zoom:33%;" />
 
 <p>有一种方法，我们可以叫做特征归一化（Feature Normalization）。例如，现在有$R$​个input，我们称一个Batch，对每一个input的第$i$​​​​​个维度（绿色框框）做归一化。</p>
 <p><code>torch.nn.BatchNorm1d</code>计算公式：<br>$$<br>y = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}} * \gamma + \beta<br>$$<br>Pytorch中实现的API：</p>
@@ -659,7 +676,15 @@ var_in0<span class="token punctuation">,</span> var_in1
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/NLP/">
+                                    <span class="chip bg-color">NLP</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">深度学习</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1092,39 +1117,53 @@ var_in0<span class="token punctuation">,</span> var_in1
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08a9503fc8.html">
+                <a href="/2022/01471f7ce8.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="BN和LN">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="工作日历">
                         
-                        <span class="card-title">BN和LN</span>
+                        <span class="card-title">工作日历</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            基于轻服务开发的工作日历项目
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-12
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Xian Li
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    前端项目
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
+                    <a href="/tags/Vue3/">
+                        <span class="chip bg-color">Vue3</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1156,11 +1195,27 @@ var_in0<span class="token punctuation">,</span> var_in1
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Xian Li
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/NLP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    NLP学习笔记
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/NLP/">
+                        <span class="chip bg-color">NLP</span>
+                    </a>
+                    
+                    <a href="/tags/Pytorch/">
+                        <span class="chip bg-color">Pytorch</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1305,7 +1360,7 @@ var_in0<span class="token punctuation">,</span> var_in1
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2020-2021</span>
+                <span id="year">2020-2022</span>
             
             <span id="year">2020</span>
             <a href="/about" target="_blank">Xian Li</a>
@@ -1314,7 +1369,7 @@ var_in0<span class="token punctuation">,</span> var_in1
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">17.8k</span>&nbsp;字
+                class="white-color">19.3k</span>&nbsp;字
             
             
             
