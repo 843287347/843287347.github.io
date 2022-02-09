@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="The Transformer 详解, 李贤的博客">
+    <meta name="keywords" content="css垂直水平居中的几种方式, 李贤的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>The Transformer 详解 | 李贤的博客</title>
+    <title>css垂直水平居中的几种方式 | 李贤的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -320,12 +320,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">The Transformer 详解</h1>
+                    <h1 class="description center-align post-title">css垂直水平居中的几种方式</h1>
                 </div>
             </div>
         </div>
@@ -441,27 +441,18 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/NLP/">
-                                <span class="chip bg-color">NLP</span>
+                            <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                                <span class="chip bg-color">前端</span>
                             </a>
                         
-                            <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                <span class="chip bg-color">论文</span>
+                            <a href="/tags/css/">
+                                <span class="chip bg-color">css</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                论文阅读
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -470,7 +461,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-20
+                    2022-02-09
                 </div>
                 
 
@@ -479,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    374
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -514,28 +505,119 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><p>对于构建语言模型和机器翻译等任务，使用基于Seq2Seq架构的RNN、LSTM、GRU等传统方法，已经取得了非常好的效果。尽管目前使用了一系列的方法，提升了RNNs的效率，例如使用因式分解，条件计算等技巧。但是RNNs根本的的缺陷并没有解决，还一直保留着。</p>
-<p>注意力机制（Attention mechanisms）已经是序列建模（sequence  modeling）和传导模型（transduction model）的不可或缺的部分。它可以找到输入、输出序列之间的依赖程度，而不依赖于词与词之间的距离。</p>
-<p>在论文中，提出了Transformer模型，它抛弃了循环神经网络，而是完全依赖于注意力机制的一种模型结构。</p>
-<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>目前效果好的神经序列传导模型都是基于encoder-decoder的结构。它的encoder部分是将符号序列表示$(x_1,…,x_n)$ 映射到连续的表示$z=(z_1,…,z_n)$，然后对于decoder部分，将$z$ 作为输入，最终输出符号序列$(y_1,…,y_m)$ ，在每一个时间步长都是自回归的：将$t-1$生成的输出，作为$t$的输入。</p>
-<p>Transformer的模型结构如下所示：</p>
-<p><img src="https://i.loli.net/2021/03/20/EZduNkxml2DQ83c.png" alt="Transformer结构"></p>
-<h4 id="编码器和解码器"><a href="#编码器和解码器" class="headerlink" title="编码器和解码器"></a>编码器和解码器</h4><p><strong>Encoder：</strong> 这个编码器是由6个相同的层堆叠构成的，其中的每一层中包括两个子层。第一个子层是<strong>多头注意力机制</strong> ，第二个子层就是简单的<strong>全连接前馈网络</strong>。在每一个子层中都是用了<strong>残差连接（residual connections）</strong>和<strong>层正则化（layer normalization）</strong>。对于每一个子层，它的输出就相当于<br>$$<br>LayerNorm(x + SubLayer(x))<br>$$<br>同时为了方便，所有的输出维度都是$d_{model}=512$。</p>
-<p><strong>Decoder：</strong> 和编码器一样，解码器也是由6个相同的层堆叠构成的。对于每一个层，除了有相同的子层之外，还添加了第三个子层，它主要是是用于处理Encoder输出的序列。和Encoder一样也是使用了残差连接和层正则化。不同的是，修改了第一个子层的多头注意力机制，通过<strong>掩盖</strong>的方式，让解码器不能处理后面的内容。（例如，假如预测下一个词任务是，已知的信息只能是前面已经出现过的词，因此需要将多余的信息抹去）。</p>
-<h4 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h4><p><strong>Scaled Dot-Product Attention</strong></p>
-<p>注意力机制可以描述成，给定一个查询、键-值对映射到一个输出向量。在这里使用了特定了“Scaled Dot-Product Attention”注意力计算方法。它的计算公式是<br>$$<br>Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V<br>$$<br>与additive attention 和dot-product 计算方法不同的是，它除以了$\sqrt{d_k}$，它可以很好地克服梯度很小的问题。</p>
-<p><img src="https://i.loli.net/2021/03/20/tRqS1NehIHPmBn7.png" alt="Scaled Dot-Product Attention计算流程"></p>
-<p><strong>Multi-Head Attention</strong></p>
-<p>多头注意力，就是通过$h$次线性投影，生成$h$个注意力层并分别计算权重。其中每一个注意力层都是通过Scaled Dot-Product Attention函数计算，最终将输出结果重新拼接到一起</p>
-<p><img src="https://i.loli.net/2021/03/20/thM1qoXaFwcLQPE.png" alt="Multi-Head Attention"></p>
-<p>使用数学公式描述就是</p>
-<p>$$<br>MultiHead(Q,K,V) = Concat(head_1,…,head_h)W^o<br>$$</p>
-<p>$$<br>head_i =Attention(QW_i^Q,KW_i^K,VW_i^V)<br>$$</p>
-<h4 id="基于位置的前馈神经网络"><a href="#基于位置的前馈神经网络" class="headerlink" title="基于位置的前馈神经网络"></a>基于位置的前馈神经网络</h4><p>除了<strong>多头自注意机制</strong> ，在编码器和解码器的每一个层都包含了前馈全连接网络。它是由两个线性变化层和ReLU函数构成。<br>$$<br>FFN(x) =max(0,xW_1 + b_1)W_2 +b_2<br>$$</p>
-<p><strong>位置编码</strong></p>
-<p>因为循环神经网络可以很好的处理时序信息，而使用注意力机制的时候，并不能很好的提供位置信息，因此需要给添加一个位置编码。有多种位置编码的方法，在原论文中，使用了三角函数的位置编码：<br>$$<br>PE（pos,2i） = sin(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$$<br>PE（pos,2i+1) = cos(pos/10000^{2i/d_{model}})<br>$$</p>
-<p>$i$是位置编码的为第$i$个维度。</p>
+                <h4 id="一、中间是Box（子容器有高宽）"><a href="#一、中间是Box（子容器有高宽）" class="headerlink" title="一、中间是Box（子容器有高宽）"></a>一、中间是Box（子容器有<strong>高宽</strong>）</h4><ol>
+<li>父容器是<code>relative</code>，子容器是<code>absolue</code></li>
+</ol>
+<ul>
+<li><p>需要知道子容器的<strong>宽和高</strong></p>
+</li>
+<li><p>1）使用绝对定位，距离<strong>左</strong>、<strong>上</strong>分别<code>50%</code>（父容器的宽高）</p>
+<ul>
+<li>利用<code>margin</code>减去本身的偏移</li>
+<li>利用<code>transorm</code>减去本身的偏移</li>
+<li>减去子容器的宽高的一半<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> khaki<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  
+  <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token selector">.wrap .box</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span>lightblue<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+
+  <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+  <span class="token property">left</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span>
+  <span class="token property">top</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span>
+  <span class="token comment">/* 方法1 */</span>
+  <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translate</span><span class="token punctuation">(</span>-50%<span class="token punctuation">,</span>-50%<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+ 	<span class="token comment">/* 方法2
+  margin-left: -25px; 
+  margin-top: -25px;
+  */</span>
+  
+  <span class="token comment">/* 方法3
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  */</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209173032323.png" alt="image-20220209173032323"></li>
+</ul>
+</li>
+<li><p>2）使用<code>margin:auto</code></p>
+<ul>
+<li>设置四个方向距离都为0。</li>
+<li>上下距离相同，并且左右距离相同即可。</li>
+<li>margin会自动补上剩余的距离。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209174827397.png" alt="image-20220209174827397"></p>
+<h4 id="二、行内元素居中"><a href="#二、行内元素居中" class="headerlink" title="二、行内元素居中"></a>二、行内元素居中</h4><ul>
+<li>父容器行高是高度，子容器继承</li>
+<li>父容器的字体大小是0，子容器的大小不是0</li>
+<li>父容器水平居中，子容器垂直middle。</li>
+<li>子容器是行内块</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> khaki<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  
+  <span class="token property">line-height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> 0px<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token selector">.wrap .box</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span>lightblue<span class="token punctuation">;</span>
+
+  <span class="token property">display</span><span class="token punctuation">:</span> inline-block<span class="token punctuation">;</span>
+  <span class="token property">vertical-align</span><span class="token punctuation">:</span> middle<span class="token punctuation">;</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> 16px<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p><img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209215405033.png" alt="image-20220209215405033"></p>
+<h4 id="三、Table"><a href="#三、Table" class="headerlink" title="三、Table"></a>三、Table</h4><ul>
+<li>父容器是table-cell</li>
+<li>父容器水平垂直居中</li>
+<li>子容器是行内块元素</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> khaki<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  
+  <span class="token property">display</span><span class="token punctuation">:</span> table-cell<span class="token punctuation">;</span>
+  <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+  <span class="token property">vertical-align</span><span class="token punctuation">:</span> middle<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token selector">.wrap .box</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span>lightblue<span class="token punctuation">;</span>
+  
+  <span class="token property">display</span><span class="token punctuation">:</span> inline-block<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="四、Flex布局"><a href="#四、Flex布局" class="headerlink" title="四、Flex布局"></a>四、Flex布局</h4><ul>
+<li>父容器是flex布局，主轴和侧轴居中。</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> khaki<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
+  
+  <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+  <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+  <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token selector">.wrap .box</span><span class="token punctuation">&#123;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span>lightblue<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -562,7 +644,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://github.com/843287347/843287347.github.io/2021/035a37797c.html">https://github.com/843287347/843287347.github.io/2021/035a37797c.html</a>
+                    <a href="https://github.com/843287347/843287347.github.io/2022/02a1032784.html">https://github.com/843287347/843287347.github.io/2022/02a1032784.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -600,12 +682,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/NLP/">
-                                    <span class="chip bg-color">NLP</span>
+                                <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                                    <span class="chip bg-color">前端</span>
                                 </a>
                             
-                                <a href="/tags/%E8%AE%BA%E6%96%87/">
-                                    <span class="chip bg-color">论文</span>
+                                <a href="/tags/css/">
+                                    <span class="chip bg-color">css</span>
                                 </a>
                             
                         </div>
@@ -1040,50 +1122,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/03b64dfe63.html">
+                <a href="/2022/02a1032784.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="BERT 详解">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="css垂直水平居中的几种方式">
                         
-                        <span class="card-title">BERT 详解</span>
+                        <span class="card-title">css垂直水平居中的几种方式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            简单的总结一下使用CSS垂直水平居中的。
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-09
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
-                                    论文阅读
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Xian Li
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/NLP/">
-                        <span class="chip bg-color">NLP</span>
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
                     </a>
                     
-                    <a href="/tags/%E8%AE%BA%E6%96%87/">
-                        <span class="chip bg-color">论文</span>
+                    <a href="/tags/css/">
+                        <span class="chip bg-color">css</span>
                     </a>
                     
                 </div>
@@ -1097,31 +1177,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/03a22cd65e.html">
+                <a href="/2022/01471f7ce8.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Nodejs 的安装">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="工作日历">
                         
-                        <span class="card-title">Nodejs 的安装</span>
+                        <span class="card-title">工作日历</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            基于轻服务开发的工作日历项目
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
+                            <a href="/categories/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    前端项目
                                 </a>
                             
                             
@@ -1131,16 +1211,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/nodejs/">
-                        <span class="chip bg-color">nodejs</span>
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
                     </a>
                     
-                    <a href="/tags/npm/">
-                        <span class="chip bg-color">npm</span>
-                    </a>
-                    
-                    <a href="/tags/yarn/">
-                        <span class="chip bg-color">yarn</span>
+                    <a href="/tags/Vue3/">
+                        <span class="chip bg-color">Vue3</span>
                     </a>
                     
                 </div>
