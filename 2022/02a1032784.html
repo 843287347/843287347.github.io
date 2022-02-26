@@ -470,7 +470,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    374
+                    372
                 </div>
                 
 
@@ -505,17 +505,21 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="一、中间是Box（子容器有高宽）"><a href="#一、中间是Box（子容器有高宽）" class="headerlink" title="一、中间是Box（子容器有高宽）"></a>一、中间是Box（子容器有<strong>高宽</strong>）</h4><ol>
-<li>父容器是<code>relative</code>，子容器是<code>absolue</code></li>
-</ol>
-<ul>
+                <h4 id="一、中间是Box（子容器有高宽）"><a href="#一、中间是Box（子容器有高宽）" class="headerlink" title="一、中间是Box（子容器有高宽）"></a>一、中间是Box（子容器有<strong>高宽</strong>）</h4><ul>
+<li><p>父容器是<code>relative</code>，子容器是<code>absolue</code></p>
+</li>
 <li><p>需要知道子容器的<strong>宽和高</strong></p>
 </li>
-<li><p>1）使用绝对定位，距离<strong>左</strong>、<strong>上</strong>分别<code>50%</code>（父容器的宽高）</p>
+</ul>
+<ol>
+<li>使用绝对定位，距离<strong>左</strong>、<strong>上</strong>分别<code>50%</code>（父容器的宽高）</li>
+</ol>
 <ul>
 <li>利用<code>margin</code>减去本身的偏移</li>
 <li>利用<code>transorm</code>减去本身的偏移</li>
-<li>减去子容器的宽高的一半<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
+<li>减去子容器的宽高的一半</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.wrap</span><span class="token punctuation">&#123;</span>
   <span class="token property">background-color</span><span class="token punctuation">:</span> khaki<span class="token punctuation">;</span>
   <span class="token property">height</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
   <span class="token property">width</span><span class="token punctuation">:</span> 300px<span class="token punctuation">;</span>
@@ -544,18 +548,18 @@
   left: calc(50% - 25px);
   */</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209173032323.png" alt="image-20220209173032323"></li>
-</ul>
-</li>
-<li><p>2）使用<code>margin:auto</code></p>
+  <img src="../images/垂直水平居中/image-20220209173032323.png" style="zoom:50%;Ï" />
+
+<ol start="2">
+<li>使用<code>margin:auto</code></li>
+</ol>
 <ul>
 <li>设置四个方向距离都为0。</li>
 <li>上下距离相同，并且左右距离相同即可。</li>
 <li>margin会自动补上剩余的距离。</li>
 </ul>
-</li>
-</ul>
-<p><img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209174827397.png" alt="image-20220209174827397"></p>
+<img src="../images/垂直水平居中/image-20220209174827397.png" alt="image-20220209174827397" style="zoom:70%;" />
+
 <h4 id="二、行内元素居中"><a href="#二、行内元素居中" class="headerlink" title="二、行内元素居中"></a>二、行内元素居中</h4><ul>
 <li>父容器行高是高度，子容器继承</li>
 <li>父容器的字体大小是0，子容器的大小不是0</li>
@@ -581,7 +585,8 @@
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-<p><img src="/../images/%E5%9E%82%E7%9B%B4%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD/image-20220209215405033.png" alt="image-20220209215405033"></p>
+<img src="../images/垂直水平居中/image-20220209215405033.png" alt="image-20220209215405033" style="zoom:50%;" />
+
 <h4 id="三、Table"><a href="#三、Table" class="headerlink" title="三、Table"></a>三、Table</h4><ul>
 <li>父容器是table-cell</li>
 <li>父容器水平垂直居中</li>
@@ -1122,30 +1127,29 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/02a1032784.html">
+                <a href="/2022/025b39b356.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="css垂直水平居中的几种方式">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Promise总结">
                         
-                        <span class="card-title">css垂直水平居中的几种方式</span>
+                        <span class="card-title">Promise总结</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            简单的总结一下使用CSS垂直水平居中的。
+                            对JavaScript中的Promise做个总结
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-09
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-22
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -1154,16 +1158,15 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
-                        <span class="chip bg-color">前端</span>
+                    <a href="/tags/javaScript/">
+                        <span class="chip bg-color">javaScript</span>
                     </a>
                     
-                    <a href="/tags/css/">
-                        <span class="chip bg-color">css</span>
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
                     </a>
                     
                 </div>
@@ -1372,7 +1375,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">19.6k</span>&nbsp;字
+                class="white-color">21k</span>&nbsp;字
             
             
             
