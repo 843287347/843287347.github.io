@@ -121,28 +121,14 @@
   </url>
   
   <url>
+    <loc>https://github.com/843287347/843287347.github.io/friends.json</loc>
+    
+    <lastmod>2021-06-04</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://github.com/843287347/843287347.github.io/baidu_verify_code-wnibYWIjqE.html</loc>
-    
-    <lastmod>2021-06-04</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://github.com/843287347/843287347.github.io/about/index.html</loc>
-    
-    <lastmod>2021-06-04</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://github.com/843287347/843287347.github.io/categories/index.html</loc>
-    
-    <lastmod>2021-06-04</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://github.com/843287347/843287347.github.io/contact/index.html</loc>
     
     <lastmod>2021-06-04</lastmod>
     
@@ -156,7 +142,21 @@
   </url>
   
   <url>
-    <loc>https://github.com/843287347/843287347.github.io/friends.json</loc>
+    <loc>https://github.com/843287347/843287347.github.io/contact/index.html</loc>
+    
+    <lastmod>2021-06-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://github.com/843287347/843287347.github.io/categories/index.html</loc>
+    
+    <lastmod>2021-06-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://github.com/843287347/843287347.github.io/about/index.html</loc>
     
     <lastmod>2021-06-04</lastmod>
     
@@ -193,20 +193,6 @@
   </url>
   
   <url>
-    <loc>https://github.com/843287347/843287347.github.io/tags/javaScript/</loc>
-    <lastmod>2022-02-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://github.com/843287347/843287347.github.io/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2022-02-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://github.com/843287347/843287347.github.io/tags/python/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
@@ -221,7 +207,7 @@
   </url>
   
   <url>
-    <loc>https://github.com/843287347/843287347.github.io/tags/git/</loc>
+    <loc>https://github.com/843287347/843287347.github.io/tags/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -256,6 +242,13 @@
   </url>
   
   <url>
+    <loc>https://github.com/843287347/843287347.github.io/tags/git/</loc>
+    <lastmod>2022-02-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://github.com/843287347/843287347.github.io/tags/Pytorch/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
@@ -264,6 +257,13 @@
   
   <url>
     <loc>https://github.com/843287347/843287347.github.io/tags/Vue3/</loc>
+    <lastmod>2022-02-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://github.com/843287347/843287347.github.io/tags/javaScript/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -293,14 +293,14 @@
   </url>
   
   <url>
-    <loc>https://github.com/843287347/843287347.github.io/categories/git/</loc>
+    <loc>https://github.com/843287347/843287347.github.io/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://github.com/843287347/843287347.github.io/categories/%E5%89%8D%E7%AB%AF/</loc>
+    <loc>https://github.com/843287347/843287347.github.io/categories/git/</loc>
     <lastmod>2022-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
